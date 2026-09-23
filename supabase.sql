@@ -10,7 +10,6 @@ create type public.report_reason as enum ('harassment','fake_profile','underage'
 create table public.profiles (
   id uuid primary key references auth.users(id) on delete cascade,
   display_name text not null check (char_length(display_name) between 2 and 40),
-  birth_date date not null check (birth_date <= current_date - interval '18 years'),
   gender text not null check (char_length(gender) between 1 and 40),
   interested_in text not null check (char_length(interested_in) between 1 and 80),
   intent public.connection_intent not null default 'both',
@@ -26,6 +25,12 @@ create table public.profiles (
   last_seen_at timestamptz default now(),
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
+);
+
+create table public.profile_private (
+  id uuid primary key references public.profiles(id) on delete cascade,
+  birth_date date not null check (birth_date <= current_date - interval '18 years'),
+  created_at timestamptz not null default now()
 );
 
 create table public.likes (
@@ -106,12 +111,17 @@ as $$
 $$;
 
 alter table public.profiles enable row level security;
+alter table public.profile_private enable row level security;
 alter table public.likes enable row level security;
 alter table public.rooms enable row level security;
 alter table public.room_messages enable row level security;
 alter table public.direct_messages enable row level security;
 alter table public.blocks enable row level security;
 alter table public.reports enable row level security;
+
+create policy "read own private profile data" on public.profile_private for select to authenticated using (auth.uid() = id);
+create policy "create own private profile data" on public.profile_private for insert to authenticated with check (auth.uid() = id);
+create policy "update own private profile data" on public.profile_private for update to authenticated using (auth.uid() = id) with check (auth.uid() = id);
 
 create policy "authenticated profiles visible when not blocked" on public.profiles
 for select to authenticated using (
