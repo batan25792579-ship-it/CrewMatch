@@ -112,8 +112,11 @@ $$('.toggle').forEach(t=>t.onclick=()=>t.classList.toggle('on'));renderPeople();
   const p={id:user.id,display_name:document.getElementById('pName').value.trim(),birth_date:document.getElementById('pDob').value,gender:document.getElementById('pGender').value.trim(),interested_in:document.getElementById('pInterested').value.trim(),intent:document.getElementById('pIntent').value,ship_name:document.getElementById('pShip').value.trim()||null,department:document.getElementById('pDept').value.trim()||null};
   if(!p.display_name||!p.birth_date||!p.gender||!p.interested_in){say('Complete name, birth date, gender and who you are interested in.');return}
   if(new Date(p.birth_date)>new Date(Date.now()-18*365.2425*86400000)){say('CrewMatch is for adults aged 18+.');return}
-  const {error}=await sb.from('profiles').upsert(p);
+  const {birth_date,...publicProfile}=p;
+  const {error}=await sb.from('profiles').upsert(publicProfile);
   if(error){say(error.message);return}
+  const {error:privateError}=await sb.from('profile_private').upsert({id:user.id,birth_date});
+  if(privateError){say('Profile saved, but age check data failed: '+privateError.message);return}
   document.getElementById('profileFields').style.display='none';await afterLogin();
  };
  async function loadGlobalChat(){
