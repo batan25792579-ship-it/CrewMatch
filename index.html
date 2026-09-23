@@ -7,9 +7,24 @@
 :root{--bg:#061726;--panel:#0b2538;--card:#103149;--line:#1b455f;--cyan:#25d5e7;--pink:#ff557d;--text:#f6fbff;--muted:#93aec0;--green:#37dc8a}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% -10%,#164764 0,#061726 38%);color:var(--text);font:15px/1.45 Inter,system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}button,input{font:inherit}.app{max-width:480px;margin:auto;min-height:100vh;padding:0 16px 92px}.top{position:sticky;top:0;z-index:5;padding:18px 0 12px;background:linear-gradient(#061726 82%,transparent)}.brand{display:flex;align-items:center;gap:10px;font-size:24px;font-weight:850}.logo{position:relative;width:38px;height:32px}.logo:before,.logo:after{content:"";position:absolute;width:21px;height:28px;border:5px solid;border-radius:16px 16px 12px 12px;transform:rotate(-45deg)}.logo:before{left:2px;border-color:var(--pink)}.logo:after{right:1px;border-color:var(--cyan);transform:rotate(45deg)}.cyan{color:var(--cyan)}h1,h2,h3,p{margin-top:0}.muted{color:var(--muted)}.screen{display:none;animation:in .22s ease}.screen.active{display:block}@keyframes in{from{opacity:.3;transform:translateY(5px)}}.hero,.card{border:1px solid var(--line);border-radius:22px;background:linear-gradient(145deg,#123852,#0a263a);box-shadow:0 14px 35px #0004}.hero{padding:20px;min-height:185px;display:flex;flex-direction:column;justify-content:flex-end;background:linear-gradient(0deg,#082235ee,#08223522),url('https://images.unsplash.com/photo-1548574505-5e239809ee19?auto=format&fit=crop&w=900&q=80') center/cover}.pill,.tag{display:inline-flex;align-items:center;gap:6px;width:max-content;border:1px solid #2b617d;border-radius:999px;padding:6px 10px;color:#c8e4f2;font-size:12px}.pill{background:#062032cc}.dot{width:8px;height:8px;border-radius:50%;background:var(--green)}.section-title{display:flex;justify-content:space-between;align-items:center;margin:22px 2px 10px}.avatars{display:flex;gap:12px;overflow:auto;padding-bottom:4px}.person{text-align:center;min-width:62px;font-size:11px;color:var(--muted)}.avatar{width:54px;height:54px;border-radius:50%;object-fit:cover;border:2px solid var(--cyan);display:block;margin:auto}.online{position:relative}.online:after{content:"";position:absolute;width:11px;height:11px;background:var(--green);border:2px solid var(--bg);border-radius:50%;right:2px;bottom:2px}.quick{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.quick .card{padding:14px 11px;min-height:118px;cursor:pointer}.quick b{display:block;margin:8px 0 4px}.icon{font-size:24px}.room-tabs{display:flex;gap:8px;overflow:auto;margin-bottom:16px}.room-tabs button{white-space:nowrap;border:1px solid var(--line);color:#c4dbe8;background:#0b2639;border-radius:999px;padding:8px 12px}.room-tabs .on{background:var(--cyan);color:#012330;border-color:var(--cyan);font-weight:800}.messages{display:flex;flex-direction:column;gap:14px}.msg{display:flex;gap:10px}.msg .avatar{width:42px;height:42px;margin:0}.bubble{padding:10px 13px;background:#173b53;border-radius:7px 16px 16px 16px;max-width:82%}.bubble small{display:block;color:var(--cyan);margin-bottom:3px}.composer{position:sticky;bottom:76px;display:flex;gap:8px;margin-top:18px;padding:10px;background:#092235ee;border:1px solid var(--line);border-radius:18px}.composer input{flex:1;border:0;outline:0;background:transparent;color:#fff}.send,.primary{border:0;background:var(--cyan);color:#03222d;font-weight:850;border-radius:14px;padding:10px 16px;cursor:pointer}.discover{overflow:hidden}.photo{height:48vh;min-height:380px;background:center/cover;position:relative}.photo:after{content:"";position:absolute;inset:35% 0 0;background:linear-gradient(transparent,#071827)}.profile-info{position:relative;margin-top:-145px;padding:18px;z-index:2}.tags{display:flex;flex-wrap:wrap;gap:7px}.actions{display:flex;justify-content:center;gap:24px;margin:18px}.round{width:62px;height:62px;border-radius:50%;border:1px solid #5d8297;background:#102d41;color:#fff;font-size:25px;cursor:pointer}.round.like{background:var(--pink);border-color:var(--pink);box-shadow:0 8px 24px #ff557d55}.match{position:fixed;inset:0;z-index:20;background:#061726f7;display:none;place-items:center;padding:30px;text-align:center}.match.show{display:grid}.match-card{max-width:390px}.match-faces{display:flex;justify-content:center;margin:28px}.match-faces img{width:120px;height:120px;border:4px solid var(--cyan);border-radius:50%;object-fit:cover}.match-faces img+img{margin-left:-22px;border-color:var(--pink)}.secondary{width:100%;border:1px solid var(--cyan);color:var(--cyan);background:transparent;border-radius:14px;padding:13px;font-weight:750;margin-top:10px}.ship-card{padding:18px}.member{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid #173c52}.member .avatar{margin:0}.profile-head{text-align:center;padding:12px}.profile-head .avatar{width:105px;height:105px}.setting{display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--line)}.toggle{width:42px;height:24px;border-radius:20px;background:#315267;position:relative}.toggle.on{background:var(--pink)}.toggle:after{content:"";position:absolute;width:18px;height:18px;border-radius:50%;background:white;top:3px;left:3px}.toggle.on:after{left:21px}.nav{position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:min(480px,100%);display:grid;grid-template-columns:repeat(5,1fr);background:#071d2ddd;border-top:1px solid var(--line);backdrop-filter:blur(18px);padding:8px 4px max(8px,env(safe-area-inset-bottom));z-index:10}.nav button{border:0;background:none;color:#8faabd;font-size:10px;padding:4px}.nav button span{display:block;font-size:21px}.nav button.active{color:var(--cyan)}.toast{position:fixed;top:18px;left:50%;transform:translateX(-50%) translateY(-80px);background:#e8fbff;color:#03222d;padding:11px 17px;border-radius:14px;font-weight:750;z-index:30;transition:.25s}.toast.show{transform:translateX(-50%) translateY(0)}@media(min-width:700px){body{padding:20px}.app{min-height:900px;border:1px solid #2b5369;border-radius:35px;overflow:hidden;box-shadow:0 30px 80px #0008}.nav{bottom:20px;border-radius:0 0 35px 35px}}
 </style>
+<style>
+.auth-trigger{margin-left:auto;border:1px solid var(--line);border-radius:999px;background:#0b2639;color:var(--cyan);padding:8px 12px;font-weight:750;cursor:pointer}
+.top-row{display:flex;align-items:center;justify-content:space-between}
+.auth-layer{position:fixed;inset:0;background:#03111dee;z-index:40;display:none;align-items:center;justify-content:center;padding:18px}
+.auth-layer.show{display:flex}
+.auth-box{width:min(440px,100%);max-height:90vh;overflow:auto;background:#0b2538;border:1px solid var(--line);border-radius:22px;padding:20px}
+.auth-box h2{margin-bottom:6px}.auth-box label{display:block;margin:12px 0 5px;color:#b8d1df;font-size:13px}
+.auth-box input,.auth-box select{width:100%;padding:12px;border:1px solid var(--line);border-radius:12px;background:#061726;color:white}
+.auth-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.auth-buttons{display:flex;gap:8px;margin-top:16px}.auth-buttons button{flex:1}
+.auth-close{float:right;border:0;background:none;color:#9eb5c5;font-size:23px;cursor:pointer}
+.auth-status{margin-top:12px;color:var(--cyan);min-height:20px;font-size:14px}
+.auth-tabs{display:flex;gap:8px;margin:16px 0}.auth-tabs button{border:1px solid var(--line);border-radius:999px;background:#071c2c;color:#d7e7ef;padding:8px 13px}
+.auth-tabs button.on{background:var(--cyan);color:#03222d}
+</style>
 </head>
 <body><div class="toast" id="toast">Done</div><main class="app">
-<header class="top"><div class="brand"><i class="logo"></i>Crew<span class="cyan">Match</span></div></header>
+<header class="top"><div class="top-row"><div class="brand"><i class="logo"></i>Crew<span class="cyan">Match</span></div></header>
 <section class="screen active" id="home"><p class="muted">Good evening, Alex</p><div class="hero"><span class="pill">CURRENT SHIP</span><h1 style="margin:9px 0 0">Sun Princess</h1><span>At sea · Next port in 2 days</span></div><div class="section-title"><h3>Online crew</h3><span class="cyan">248 online</span></div><div class="avatars" id="avatars"></div><div class="section-title"><h3>Connect</h3></div><div class="quick"><div class="card" data-go="chat"><span class="icon">💬</span><b>Global Chat</b><small class="muted">Crew worldwide</small></div><div class="card" data-go="ship"><span class="icon">🚢</span><b>My Ship</b><small class="muted">Sun Princess</small></div><div class="card" data-go="discover"><span class="icon">🌴</span><b>Discover</b><small class="muted">Meet new crew</small></div></div></section>
 <section class="screen" id="chat"><h2>Global Crew Chat</h2><p class="muted"><span class="dot" style="display:inline-block"></span> 248 crew members online</p><div class="room-tabs"><button class="on">Global</button><button>My Ship</button><button>Dating</button><button>Shore Leave</button></div><div class="messages" id="messages"></div><form class="composer" id="chatForm"><input id="chatInput" placeholder="Type a message…" autocomplete="off"><button class="send">➤</button></form></section>
 <section class="screen" id="discover"><h2>Discover</h2><p class="muted">Meet amazing crew from around the world</p><div class="card discover"><div class="photo" id="discoverPhoto"></div><div class="profile-info"><span class="pill"><i class="dot"></i> Online now</span><h1 id="discoverName" style="margin:10px 0 2px"></h1><p id="discoverMeta"></p><div class="tags"><span class="tag">❤ Dating</span><span class="tag">👥 Friends</span><span class="tag">🌴 Shore Leave</span></div><p id="discoverBio" style="margin-top:13px"></p></div></div><div class="actions"><button class="round" id="skipBtn">×</button><button class="round like" id="likeBtn">♥</button><button class="round" id="profileBtn">♙</button></div></section>
@@ -47,4 +62,80 @@ $('#avatars').innerHTML=people.map(p=>'<div class="person"><div class="online"><
 $('#shipMembers').innerHTML=people.slice(1).map(p=>'<div class="member"><div class="online"><img class="avatar" src="'+p.img+'"></div><div><b>'+p.name+'</b><br><small class="muted">'+p.dept+'</small></div></div>').join('');
 $$('.room-tabs button').forEach(b=>b.onclick=()=>{$$('.room-tabs button').forEach(x=>x.classList.remove('on'));b.classList.add('on');toast(b.textContent+' room selected')});
 $$('.toggle').forEach(t=>t.onclick=()=>t.classList.toggle('on'));renderPeople();
+</script><script>
+(()=> {
+ const layer=document.getElementById('authLayer'),status=document.getElementById('authStatus');
+ let sb=null,user=null,globalRoom=null;
+ const say=t=>{status.textContent=t};
+ const cfg=()=>{try{return JSON.parse(localStorage.getItem('crewmatchSupabase')||'null')}catch{return null}};
+ function setTab(tab){document.querySelectorAll('[data-auth-tab]').forEach(b=>b.classList.toggle('on',b.dataset.authTab===tab));document.getElementById('connectPane').style.display=tab==='connect'?'block':'none';document.getElementById('accountPane').style.display=tab==='account'?'block':'none';document.getElementById('authTitle').textContent=tab==='connect'?'Connect CrewMatch':'Crew account';document.getElementById('authSub').textContent=tab==='connect'?'Add your Supabase project details to enable real accounts and shared chat.':'Create an account for crew members aged 18 and over.';say('')}
+ function connect(c){if(!c||!c.url||!c.key)return false;if(!window.supabase){say('Connection library did not load. Refresh and try again.');return false}sb=window.supabase.createClient(c.url,c.key);return true}
+ const saved=cfg();if(saved){document.getElementById('sbUrl').value=saved.url||'';document.getElementById('sbKey').value=saved.key||'';connect(saved)}
+ document.getElementById('authOpen').onclick=()=>{layer.classList.add('show');setTab(sb?'account':'connect')};
+ document.getElementById('authClose').onclick=()=>layer.classList.remove('show');
+ layer.addEventListener('click',e=>{if(e.target===layer)layer.classList.remove('show')});
+ document.querySelectorAll('[data-auth-tab]').forEach(b=>b.onclick=()=>setTab(b.dataset.authTab));
+ document.getElementById('saveSb').onclick=async()=>{
+  const url=document.getElementById('sbUrl').value.trim().replace(/\/$/,''),key=document.getElementById('sbKey').value.trim();
+  if(!/^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(url)||!key){say('Check the Project URL and Publishable key.');return}
+  const c={url,key};localStorage.setItem('crewmatchSupabase',JSON.stringify(c));
+  if(connect(c)){say('Connected. Now create or log into your crew account.');setTab('account');await restoreSession()}
+ };
+ async function restoreSession(){if(!sb)return;const {data}=await sb.auth.getSession();if(data.session){user=data.session.user;await afterLogin()}}
+ async function afterLogin(){
+  document.getElementById('authOpen').textContent='My account';
+  const {data:profile,error}=await sb.from('profiles').select('id,display_name,intent,ship_name,department,avatar_url,show_ship,show_department').eq('id',user.id).maybeSingle();
+  if(error){say('Signed in, but profile lookup failed: '+error.message);return}
+  if(!profile){say('Account created. Complete the crew profile below.');document.getElementById('profileFields').style.display='block';document.getElementById('pName').value=user.user_metadata?.display_name||'';return}
+  say('Signed in as '+profile.display_name+'.');document.getElementById('authOpen').textContent=profile.display_name;
+  const heading=document.querySelector('#profile .profile-head h1');if(heading)heading.textContent=profile.display_name;
+  if(profile.ship_name){const homeShip=document.querySelector('#home .hero h1');if(homeShip)homeShip.textContent=profile.ship_name}
+  await loadGlobalChat();
+ }
+ document.getElementById('signUp').onclick=async()=>{
+  if(!sb){say('First connect the Supabase project in Setup.');return}
+  const email=document.getElementById('authEmail').value.trim(),password=document.getElementById('authPassword').value;
+  if(!email||password.length<8){say('Enter an email and a password with at least 8 characters.');return}
+  const {data,error}=await sb.auth.signUp({email,password,options:{data:{display_name:document.getElementById('pName').value.trim()||email.split('@')[0]}}});
+  if(error){say(error.message);return}
+  user=data.user;
+  if(data.session){say('Account created. Fill out your crew profile.');document.getElementById('profileFields').style.display='block'}
+  else say('Check your email to confirm your account, then log in to finish your profile.');
+ };
+ document.getElementById('signIn').onclick=async()=>{
+  if(!sb){say('First connect the Supabase project in Setup.');return}
+  const {data,error}=await sb.auth.signInWithPassword({email:document.getElementById('authEmail').value.trim(),password:document.getElementById('authPassword').value});
+  if(error){say(error.message);return}user=data.user;await afterLogin();
+ };
+ document.getElementById('saveProfile').onclick=async()=>{
+  if(!sb||!user){say('Log in first.');return}
+  const p={id:user.id,display_name:document.getElementById('pName').value.trim(),birth_date:document.getElementById('pDob').value,gender:document.getElementById('pGender').value.trim(),interested_in:document.getElementById('pInterested').value.trim(),intent:document.getElementById('pIntent').value,ship_name:document.getElementById('pShip').value.trim()||null,department:document.getElementById('pDept').value.trim()||null};
+  if(!p.display_name||!p.birth_date||!p.gender||!p.interested_in){say('Complete name, birth date, gender and who you are interested in.');return}
+  if(new Date(p.birth_date)>new Date(Date.now()-18*365.2425*86400000)){say('CrewMatch is for adults aged 18+.');return}
+  const {error}=await sb.from('profiles').upsert(p);
+  if(error){say(error.message);return}
+  document.getElementById('profileFields').style.display='none';await afterLogin();
+ };
+ async function loadGlobalChat(){
+  if(!sb||!user)return;
+  const {data:rooms,error}=await sb.from('rooms').select('id,name').eq('kind','global').eq('is_active',true).limit(1);
+  if(error){say('Chat setup error: '+error.message);return}
+  globalRoom=rooms?.[0]?.id;if(!globalRoom){say('No Global Crew Chat room found. Run the SQL setup script.');return}
+  const {data:rows,error:msgErr}=await sb.from('room_messages').select('id,sender_id,body,created_at,profiles(display_name,department,avatar_url)').eq('room_id',globalRoom).order('created_at',{ascending:true}).limit(80);
+  if(msgErr){say('Cannot load chat: '+msgErr.message);return}
+  const box=document.getElementById('messages');box.replaceChildren();
+  rows.forEach(row=>{const prof=row.profiles||{};const d=document.createElement('div');d.className='msg';const im=document.createElement('img');im.className='avatar';im.src=prof.avatar_url||'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&q=70';const bubble=document.createElement('div');bubble.className='bubble';const small=document.createElement('small');small.textContent=(prof.display_name||'Crew member')+(prof.department?' · '+prof.department:'');const body=document.createElement('div');body.textContent=row.body;bubble.append(small,body);d.append(im,bubble);box.append(d)});box.scrollTop=box.scrollHeight;
+  if(window.__crewRealtime)sb.removeChannel(window.__crewRealtime);
+  window.__crewRealtime=sb.channel('crew-global-'+globalRoom).on('postgres_changes',{event:'INSERT',schema:'public',table:'room_messages',filter:'room_id=eq.'+globalRoom},payload=>{if(payload.new.sender_id===user.id)return;loadGlobalChat()}).subscribe();
+ }
+ const oldSubmit=document.getElementById('chatForm').onsubmit;
+ document.getElementById('chatForm').onsubmit=async e=>{
+  if(!sb||!user){if(oldSubmit)oldSubmit(e);document.getElementById('authOpen').click();return}
+  e.preventDefault();const input=document.getElementById('chatInput'),body=input.value.trim();if(!body)return;
+  if(!globalRoom){await loadGlobalChat();if(!globalRoom)return}
+  const {error}=await sb.from('room_messages').insert({room_id:globalRoom,sender_id:user.id,body});
+  if(error){say('Message not sent: '+error.message);return}input.value='';await loadGlobalChat()
+ };
+ sb&&restoreSession();
+})();
 </script></body></html>
