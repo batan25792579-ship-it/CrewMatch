@@ -36,7 +36,7 @@
 </main>
 <div class="auth-layer" id="authLayer"><div class="auth-box"><button class="auth-close" id="authClose">×</button><h2 id="authTitle">Connect CrewMatch</h2><p class="muted" id="authSub">Add the Supabase Project URL and publishable key to enable real accounts and chat.</p>
 <div class="auth-tabs"><button class="on" data-auth-tab="connect">Setup</button><button data-auth-tab="account">Account</button></div>
-<div id="connectPane"><label>Supabase Project URL</label><input id="sbUrl" placeholder="https://your-project.supabase.co" autocomplete="url"><label>Publishable key</label><input id="sbKey" placeholder="sb_publishable_..." autocomplete="off"><button class="primary" id="saveSb" style="width:100%;margin-top:16px">Save connection</button><p class="muted" style="font-size:12px;margin-top:10px">Use only the Publishable key. Never enter a Secret or service_role key.</p></div>
+<div id="connectPane"><label>Supabase Project URL</label><input id="sbUrl" placeholder="https://your-project.supabase.co" autocomplete="url"><label>Publishable key</label><input id="sbKey" placeholder="sb_publishable_..." autocomplete="off"><button class="primary" id="saveSb" style="width:100%;margin-top:16px">Save connection</button><p class="muted" style="font-size:12px;margin-top:10px">Use only the Publishable key. Never enter a Secret or service_role key.</p><p id="dbStatus" role="status" class="muted">Database setup has not been checked.</p><a href="https://github.com/batan25792579-ship-it/CrewMatch/blob/main/supabase-profile-gate.sql" target="_blank" rel="noopener" style="color:var(--cyan)">Open security upgrade SQL</a></div>
 <div id="accountPane" style="display:none"><label>Email</label><input id="authEmail" type="email" autocomplete="email"><label>Password</label><input id="authPassword" type="password" autocomplete="current-password" minlength="8"><div class="auth-buttons"><button class="primary" id="signIn">Log in</button><button class="primary" id="signUp">Create account</button></div>
 <div id="profileFields" style="display:none"><hr style="border-color:var(--line);margin:18px 0"><h3>Finish your 18+ crew profile</h3><label>Display name</label><input id="pName" maxlength="40"><div class="auth-row"><div><label>Date of birth</label><input id="pDob" type="date"></div><div><label>Gender</label><input id="pGender" maxlength="40" placeholder="Enter gender"></div></div><label>Interested in</label><input id="pInterested" maxlength="80" placeholder="Who are you interested in?"><label>Connection goal</label><select id="pIntent"><option value="both">Friends and dating</option><option value="dating">Dating</option><option value="friends">Friends</option></select><label>Ship (optional)</label><input id="pShip" maxlength="80"><label>Department (optional)</label><input id="pDept" maxlength="80"><button class="primary" id="saveProfile" style="width:100%;margin-top:14px">Save crew profile</button></div></div>
 <div class="auth-status" id="authStatus" role="status"></div></div></div><div class="match" id="match"><div class="match-card"><div class="brand" style="justify-content:center"><i class="logo"></i>Crew<span class="cyan">Match</span></div><div class="match-faces"><div class="match-placeholder">You</div><img id="matchFace" alt="Matched crew member"></div><h1>It's a Match!</h1><p class="muted">You liked each other. Start with a respectful hello.</p><button class="primary" style="width:100%;padding:14px" id="messageMatch">Send a message</button><button class="secondary" id="closeMatch">Keep discovering</button></div></div>
@@ -50,7 +50,7 @@ $('#chatForm').onsubmit=e=>e.preventDefault();
 </script><script>
 (()=> {
  const layer=document.getElementById('authLayer'),status=document.getElementById('authStatus');
- let sb=null,user=null,globalRoom=null,crewCards=[],crewIndex=0,selectedRecipient=null;
+ let sb=null,user=null,globalRoom=null,crewCards=[],crewIndex=0,selectedRecipient=null,dbReady=false;
  const placeholderAvatar='data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="#16405b"/><circle cx="60" cy="42" r="22" fill="#8fc4d5"/><path d="M17 113c0-28 19-43 43-43s43 15 43 43" fill="#8fc4d5"/></svg>');
  const avatar=url=>url&&url.startsWith('https://')?url:placeholderAvatar;
  function addCrewMember(box,p,click){
@@ -130,9 +130,19 @@ $('#chatForm').onsubmit=e=>e.preventDefault();
  const say=t=>{status.textContent=t};
  const cfg=()=>{try{return JSON.parse(localStorage.getItem('crewmatchSupabase')||'null')}catch{return null}};
  function setTab(tab){document.querySelectorAll('[data-auth-tab]').forEach(b=>b.classList.toggle('on',b.dataset.authTab===tab));document.getElementById('connectPane').style.display=tab==='connect'?'block':'none';document.getElementById('accountPane').style.display=tab==='account'?'block':'none';document.getElementById('authTitle').textContent=tab==='connect'?'Connect CrewMatch':'Crew account';document.getElementById('authSub').textContent=tab==='connect'?'Add your Supabase project details to enable real accounts and shared chat.':'Create an account for crew members aged 18 and over.';say('')}
- function connect(c){if(!c||!c.url||!c.key)return false;if(!window.supabase){say('Connection library did not load. Refresh and try again.');return false}try{sb=window.supabase.createClient(c.url,c.key);return true}catch(e){say('Could not initialize connection: '+e.message);return false}}
+ function connect(c){if(!c||!c.url||!c.key)return false;dbReady=false;if(!window.supabase){say('Connection library did not load. Refresh and try again.');return false}try{sb=window.supabase.createClient(c.url,c.key);return true}catch(e){say('Could not initialize connection: '+e.message);return false}}
+ async function checkSchema(){
+  const status=document.getElementById('dbStatus');
+  if(!sb){dbReady=false;status.textContent='Enter the Supabase Project URL and Publishable key.';return false}
+  try{
+   const {data,error}=await sb.rpc('crewmatch_setup_status');
+   dbReady=!error&&data==='adult-profile-gate-v1';
+   status.textContent=dbReady?'Database ready for crew accounts.':'Database upgrade is missing or unavailable. Open the SQL file below.';
+   return dbReady
+  }catch(e){dbReady=false;status.textContent='Could not check the database: '+e.message;return false}
+ }
  const saved=cfg();if(saved){document.getElementById('sbUrl').value=saved.url||'';document.getElementById('sbKey').value=saved.key||'';connect(saved)}
- document.getElementById('authOpen').onclick=()=>{layer.classList.add('show');setTab(sb?'account':'connect')};
+ document.getElementById('authOpen').onclick=()=>{layer.classList.add('show');setTab(dbReady?'account':'connect')};
  document.getElementById('authClose').onclick=()=>layer.classList.remove('show');
  layer.addEventListener('click',e=>{if(e.target===layer)layer.classList.remove('show')});
  document.querySelectorAll('[data-auth-tab]').forEach(b=>b.onclick=()=>setTab(b.dataset.authTab));
@@ -142,12 +152,15 @@ $('#chatForm').onsubmit=e=>e.preventDefault();
   const c={url,key};
   if(connect(c)){
     const {error}=await sb.from('rooms').select('id').limit(1);
-    if(error){sb=null;say('Project check failed: '+error.message+'. Check your key and SQL setup.');return}
-    localStorage.setItem('crewmatchSupabase',JSON.stringify(c));setTab('account');say('Connection verified. Create or log into your account.');await restoreSession()
+    if(error){sb=null;dbReady=false;say('Project check failed: '+error.message+'. Check your key and SQL setup.');return}
+    localStorage.setItem('crewmatchSupabase',JSON.stringify(c));
+    if(!(await checkSchema())){setTab('connect');say('Run the security upgrade SQL in Supabase, then press Save connection again.');return}
+    setTab('account');say('Database ready. Create or log into your account.');await restoreSession()
    }
  };
  async function restoreSession(){if(!sb)return;const {data}=await sb.auth.getSession();if(data.session){user=data.session.user;await afterLogin()}}
  async function afterLogin(){
+   if(!dbReady)return;
    document.getElementById('authOpen').textContent='My account';
    const {data:profile,error}=await sb.from('profiles').select('id,display_name,intent,ship_name,department,avatar_url,show_ship,show_department').eq('id',user.id).maybeSingle();
    if(error){say('Signed in, but profile lookup failed: '+error.message);return}
@@ -165,6 +178,7 @@ $('#chatForm').onsubmit=e=>e.preventDefault();
   }
  document.getElementById('signUp').onclick=async()=>{
   if(!sb){say('First connect the Supabase project in Setup.');return}
+  if(!(await checkSchema())){setTab('connect');say('Apply the SQL upgrade before creating an account.');return}
   const email=document.getElementById('authEmail').value.trim(),password=document.getElementById('authPassword').value;
   if(!email||password.length<8){say('Enter an email and a password with at least 8 characters.');return}
   const {data,error}=await sb.auth.signUp({email,password,options:{data:{display_name:document.getElementById('pName').value.trim()||email.split('@')[0]}}});
@@ -175,23 +189,19 @@ $('#chatForm').onsubmit=e=>e.preventDefault();
  };
  document.getElementById('signIn').onclick=async()=>{
   if(!sb){say('First connect the Supabase project in Setup.');return}
+  if(!(await checkSchema())){setTab('connect');say('Apply the SQL upgrade before signing in.');return}
   const {data,error}=await sb.auth.signInWithPassword({email:document.getElementById('authEmail').value.trim(),password:document.getElementById('authPassword').value});
   if(error){say(error.message);return}user=data.user;await afterLogin();
  };
  document.getElementById('saveProfile').onclick=async()=>{
   if(!sb||!user){say('Log in first.');return}
+  if(!(await checkSchema())){setTab('connect');say('Apply the SQL upgrade before saving a profile.');return}
   const p={id:user.id,display_name:document.getElementById('pName').value.trim(),birth_date:document.getElementById('pDob').value,gender:document.getElementById('pGender').value.trim(),interested_in:document.getElementById('pInterested').value.trim(),intent:document.getElementById('pIntent').value,ship_name:document.getElementById('pShip').value.trim()||null,department:document.getElementById('pDept').value.trim()||null};
   if(!p.display_name||!p.birth_date||!p.gender||!p.interested_in){say('Complete name, birth date, gender and who you are interested in.');return}
   const today=new Date(),cutoff=new Date(Date.UTC(today.getUTCFullYear()-18,today.getUTCMonth(),today.getUTCDate())).toISOString().slice(0,10);
   if(p.birth_date>cutoff){say('CrewMatch is for adults aged 18+.');return}
   const {error:rpcError}=await sb.rpc('save_crew_profile',{p_display_name:p.display_name,p_birth_date:p.birth_date,p_gender:p.gender,p_interested_in:p.interested_in,p_intent:p.intent,p_ship_name:p.ship_name,p_department:p.department});
-  if(rpcError?.code==='PGRST202'){
-   const {birth_date,...publicProfile}=p;
-   const {error}=await sb.from('profiles').upsert(publicProfile);
-   if(error){say('Profile could not be saved: '+error.message);return}
-   const {error:privateError}=await sb.from('profile_private').upsert({id:user.id,birth_date});
-   if(privateError){say('Profile saved, but age data failed: '+privateError.message);return}
-  }else if(rpcError){say('Profile could not be saved: '+rpcError.message);return}
+  if(rpcError){say('Profile could not be saved: '+rpcError.message);return}
   document.getElementById('profileFields').style.display='none';await afterLogin();
  };
  async function loadGlobalChat(){
@@ -287,6 +297,6 @@ $('#chatForm').onsubmit=e=>e.preventDefault();
   if(error){say('Could not log out: '+error.message);return}
   location.reload()
  };
- if(sb)restoreSession()
+ if(sb)checkSchema().then(ready=>{if(ready)restoreSession()})
 })();
 </script></body></html>
