@@ -25,7 +25,7 @@
 </style>
 </head>
 <body><div class="toast" id="toast">Done</div><main class="app">
-<header class="top"><div class="top-row"><div class="brand"><i class="logo"></i>Crew<span class="cyan">Match</span></div><button class="auth-trigger" id="authOpen">Connect</button></div></header>
+<header class="top"><div class="top-row"><div class="brand"><i class="logo"></i>Crew<span class="cyan">Match</span></div><button class="auth-trigger" id="authOpen">Join CrewMatch</button></div></header>
 <section class="screen active" id="home"><p class="muted" id="homeGreeting">Sign in to meet real crew members</p><div class="hero"><span class="pill">YOUR SHIP</span><h1 id="homeShip" style="margin:9px 0 0">Your ship</h1><span id="homeShipMeta">Add a ship to your crew profile</span></div><div class="section-title"><h3>Crew profiles</h3><span class="cyan" id="crewCount">Sign in to see crew</span></div><div class="avatars" id="avatars"></div><div class="section-title"><h3>Connect</h3></div><div class="quick"><div class="card" data-go="chat"><span class="icon">💬</span><b>Global Chat</b><small class="muted">Crew worldwide</small></div><div class="card" data-go="ship"><span class="icon">🚢</span><b>My Ship</b><small class="muted" id="homeShipLink">Your ship</small></div><div class="card" data-go="discover"><span class="icon">🌴</span><b>Discover</b><small class="muted">Meet new crew</small></div></div></section>
 <section class="screen" id="chat"><h2>Global Crew Chat</h2><p class="muted" id="chatStatus">Sign in to see crew messages.</p><div class="messages" id="messages"></div><form class="composer" id="chatForm"><input id="chatInput" placeholder="Type a message…" maxlength="1000" autocomplete="off"><button class="send" aria-label="Send message">➤</button></form></section>
 <section class="screen" id="discover"><div class="top-row"><h2>Discover</h2><button class="auth-trigger" id="refreshCrew">Refresh</button></div><p class="muted">Meet crew members with real accounts</p><div class="card discover"><div class="photo" id="discoverPhoto"></div><div class="profile-info"><span class="pill">Crew profile</span><h1 id="discoverName" style="margin:10px 0 2px">Sign in to discover crew</h1><p id="discoverMeta"></p><div class="tags" id="discoverTags"></div><p id="discoverBio" style="margin-top:13px"></p></div></div><div class="actions"><button class="round" id="skipBtn" aria-label="Skip profile">×</button><button class="round like" id="likeBtn" aria-label="Like profile">♥</button><button class="round" id="profileBtn" aria-label="Profile details">ⓘ</button></div></section>
@@ -34,9 +34,9 @@
 <section class="screen" id="ship"><h2 id="shipTitle">Your ship</h2><p class="muted" id="shipStatus">Sign in and add a ship to see your crew community.</p><div class="card ship-card"><h3>About this community</h3><p>Only crew members who choose to show their ship appear here. Never post cabin numbers or work schedules.</p></div><div class="section-title"><h3>Crew members</h3></div><div class="card ship-card" id="shipMembers">Sign in to see your ship community.</div></section>
 <section class="screen" id="profile"><div class="profile-head"><h1 id="myName">Sign in to CrewMatch</h1><p class="muted" id="myMeta">Your profile will appear here.</p></div><div class="card ship-card"><h3>Your connection goal</h3><p id="myIntent">Create a profile to meet crew.</p><p class="muted">Private messages open after a mutual like. Your birth date stays private.</p><button class="primary" id="editProfile" style="display:none;width:100%">Edit profile</button><button class="secondary" id="signOut" style="display:none">Log out</button></div></section>
 </main>
-<div class="auth-layer" id="authLayer"><div class="auth-box"><button class="auth-close" id="authClose">×</button><h2 id="authTitle">Connect CrewMatch</h2><p class="muted" id="authSub">Add the Supabase Project URL and publishable key to enable real accounts and chat.</p>
-<div class="auth-tabs"><button class="on" data-auth-tab="connect">Setup</button><button data-auth-tab="account">Account</button></div>
-<div id="connectPane"><label>Supabase Project URL</label><input id="sbUrl" placeholder="https://your-project.supabase.co" autocomplete="url"><label>Publishable key</label><input id="sbKey" placeholder="sb_publishable_..." autocomplete="off"><button class="primary" id="saveSb" style="width:100%;margin-top:16px">Save connection</button><p class="muted" style="font-size:12px;margin-top:10px">Use only the Publishable key. Never enter a Secret or service_role key.</p><p id="dbStatus" role="status" class="muted">Database setup has not been checked.</p><a href="https://github.com/batan25792579-ship-it/CrewMatch/blob/main/supabase-profile-gate.sql" target="_blank" rel="noopener" style="color:var(--cyan)">Open security upgrade SQL</a></div>
+<div class="auth-layer" id="authLayer"><div class="auth-box"><button class="auth-close" id="authClose">×</button><h2 id="authTitle">Crew account</h2><p class="muted" id="authSub">Create an account to meet crew members.</p>
+<div class="auth-tabs"><button class="on" data-auth-tab="connect">Status</button><button data-auth-tab="account">Account</button></div>
+<div id="connectPane"><p class="muted">CrewMatch is connected to its shared database.</p><p id="dbStatus" role="status" class="muted">Checking connection…</p><button class="primary" id="saveSb" style="width:100%;margin-top:16px">Check connection</button></div>
 <div id="accountPane" style="display:none"><label>Email</label><input id="authEmail" type="email" autocomplete="email"><label>Password</label><input id="authPassword" type="password" autocomplete="current-password" minlength="8"><div class="auth-buttons"><button class="primary" id="signIn">Log in</button><button class="primary" id="signUp">Create account</button></div>
 <div id="profileFields" style="display:none"><hr style="border-color:var(--line);margin:18px 0"><h3>Finish your 18+ crew profile</h3><label>Display name</label><input id="pName" maxlength="40"><div class="auth-row"><div><label>Date of birth</label><input id="pDob" type="date"></div><div><label>Gender</label><input id="pGender" maxlength="40" placeholder="Enter gender"></div></div><label>Interested in</label><input id="pInterested" maxlength="80" placeholder="Who are you interested in?"><label>Connection goal</label><select id="pIntent"><option value="both">Friends and dating</option><option value="dating">Dating</option><option value="friends">Friends</option></select><label>Ship (optional)</label><input id="pShip" maxlength="80"><label>Department (optional)</label><input id="pDept" maxlength="80"><button class="primary" id="saveProfile" style="width:100%;margin-top:14px">Save crew profile</button></div></div>
 <div class="auth-status" id="authStatus" role="status"></div></div></div><div class="match" id="match"><div class="match-card"><div class="brand" style="justify-content:center"><i class="logo"></i>Crew<span class="cyan">Match</span></div><div class="match-faces"><div class="match-placeholder">You</div><img id="matchFace" alt="Matched crew member"></div><h1>It's a Match!</h1><p class="muted">You liked each other. Start with a respectful hello.</p><button class="primary" style="width:100%;padding:14px" id="messageMatch">Send a message</button><button class="secondary" id="closeMatch">Keep discovering</button></div></div>
@@ -128,35 +128,27 @@ $('#chatForm').onsubmit=e=>e.preventDefault();
  document.getElementById('closeMatch').onclick=()=>{document.getElementById('match').classList.remove('show');crewIndex++;showCrewCard()};
 
  const say=t=>{status.textContent=t};
- const cfg=()=>{try{return JSON.parse(localStorage.getItem('crewmatchSupabase')||'null')}catch{return null}};
- function setTab(tab){document.querySelectorAll('[data-auth-tab]').forEach(b=>b.classList.toggle('on',b.dataset.authTab===tab));document.getElementById('connectPane').style.display=tab==='connect'?'block':'none';document.getElementById('accountPane').style.display=tab==='account'?'block':'none';document.getElementById('authTitle').textContent=tab==='connect'?'Connect CrewMatch':'Crew account';document.getElementById('authSub').textContent=tab==='connect'?'Add your Supabase project details to enable real accounts and shared chat.':'Create an account for crew members aged 18 and over.';say('')}
+ const CREWMATCH_DB={url:"https://eigfqueoowtvxpyromdn.supabase.co",key:"sb_publishable_II7F1u545Tq_xT-XlMDQtg_rZgAqnwN"};
+ function setTab(tab){document.querySelectorAll('[data-auth-tab]').forEach(b=>b.classList.toggle('on',b.dataset.authTab===tab));document.getElementById('connectPane').style.display=tab==='connect'?'block':'none';document.getElementById('accountPane').style.display=tab==='account'?'block':'none';document.getElementById('authTitle').textContent=tab==='connect'?'CrewMatch status':'Crew account';document.getElementById('authSub').textContent=tab==='connect'?'Connection status for the CrewMatch community.':'Create an account for crew members aged 18 and over.';say('')}
  function connect(c){if(!c||!c.url||!c.key)return false;dbReady=false;if(!window.supabase){say('Connection library did not load. Refresh and try again.');return false}try{sb=window.supabase.createClient(c.url,c.key);return true}catch(e){say('Could not initialize connection: '+e.message);return false}}
  async function checkSchema(){
   const status=document.getElementById('dbStatus');
-  if(!sb){dbReady=false;status.textContent='Enter the Supabase Project URL and Publishable key.';return false}
+  if(!sb){dbReady=false;status.textContent='Connection unavailable. Refresh and try again.';return false}
   try{
    const {data,error}=await sb.rpc('crewmatch_setup_status');
    dbReady=!error&&data==='adult-profile-gate-v1';
-   status.textContent=dbReady?'Database ready for crew accounts.':'Database upgrade is missing or unavailable. Open the SQL file below.';
+   status.textContent=dbReady?'Database ready for crew accounts.':'Database is temporarily unavailable. Try again shortly.';
    return dbReady
   }catch(e){dbReady=false;status.textContent='Could not check the database: '+e.message;return false}
  }
- const saved=cfg();if(saved){document.getElementById('sbUrl').value=saved.url||'';document.getElementById('sbKey').value=saved.key||'';connect(saved)}
- document.getElementById('authOpen').onclick=()=>{layer.classList.add('show');setTab(dbReady?'account':'connect')};
+ connect(CREWMATCH_DB)
+ document.getElementById('authOpen').onclick=async()=>{layer.classList.add('show');if(!dbReady)await checkSchema();setTab(dbReady?'account':'connect')};
  document.getElementById('authClose').onclick=()=>layer.classList.remove('show');
  layer.addEventListener('click',e=>{if(e.target===layer)layer.classList.remove('show')});
  document.querySelectorAll('[data-auth-tab]').forEach(b=>b.onclick=()=>setTab(b.dataset.authTab));
  document.getElementById('saveSb').onclick=async()=>{
-  const url=document.getElementById('sbUrl').value.trim().replace(/\/$/,''),key=document.getElementById('sbKey').value.trim();
-  if(!/^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(url)||!key){say('Check the Project URL and Publishable key.');return}
-  const c={url,key};
-  if(connect(c)){
-    const {error}=await sb.from('rooms').select('id').limit(1);
-    if(error){sb=null;dbReady=false;say('Project check failed: '+error.message+'. Check your key and SQL setup.');return}
-    localStorage.setItem('crewmatchSupabase',JSON.stringify(c));
-    if(!(await checkSchema())){setTab('connect');say('Run the security upgrade SQL in Supabase, then press Save connection again.');return}
-    setTab('account');say('Database ready. Create or log into your account.');await restoreSession()
-   }
+   if(await checkSchema()){setTab('account');say('Database ready. Create or log into your account.');await restoreSession()}
+   else say('Connection is unavailable. Try again shortly.')
  };
  async function restoreSession(){if(!sb)return;const {data}=await sb.auth.getSession();if(data.session){user=data.session.user;await afterLogin()}}
  async function afterLogin(){
@@ -177,8 +169,8 @@ $('#chatForm').onsubmit=e=>e.preventDefault();
    await Promise.all([loadCrewCards(),loadShipCrew(profile),loadGlobalChat(),loadMatches()])
   }
  document.getElementById('signUp').onclick=async()=>{
-  if(!sb){say('First connect the Supabase project in Setup.');return}
-  if(!(await checkSchema())){setTab('connect');say('Apply the SQL upgrade before creating an account.');return}
+  if(!sb){say('Connection unavailable. Refresh the page.');return}
+  if(!(await checkSchema())){setTab('connect');say('Database is temporarily unavailable. Try again shortly.');return}
   const email=document.getElementById('authEmail').value.trim(),password=document.getElementById('authPassword').value;
   if(!email||password.length<8){say('Enter an email and a password with at least 8 characters.');return}
   const {data,error}=await sb.auth.signUp({email,password,options:{data:{display_name:document.getElementById('pName').value.trim()||email.split('@')[0]}}});
@@ -189,13 +181,13 @@ $('#chatForm').onsubmit=e=>e.preventDefault();
  };
  document.getElementById('signIn').onclick=async()=>{
   if(!sb){say('First connect the Supabase project in Setup.');return}
-  if(!(await checkSchema())){setTab('connect');say('Apply the SQL upgrade before signing in.');return}
+  if(!(await checkSchema())){setTab('connect');say('Database is temporarily unavailable. Try again shortly.');return}
   const {data,error}=await sb.auth.signInWithPassword({email:document.getElementById('authEmail').value.trim(),password:document.getElementById('authPassword').value});
   if(error){say(error.message);return}user=data.user;await afterLogin();
  };
  document.getElementById('saveProfile').onclick=async()=>{
   if(!sb||!user){say('Log in first.');return}
-  if(!(await checkSchema())){setTab('connect');say('Apply the SQL upgrade before saving a profile.');return}
+  if(!(await checkSchema())){setTab('connect');say('Database is temporarily unavailable. Try again shortly.');return}
   const p={id:user.id,display_name:document.getElementById('pName').value.trim(),birth_date:document.getElementById('pDob').value,gender:document.getElementById('pGender').value.trim(),interested_in:document.getElementById('pInterested').value.trim(),intent:document.getElementById('pIntent').value,ship_name:document.getElementById('pShip').value.trim()||null,department:document.getElementById('pDept').value.trim()||null};
   if(!p.display_name||!p.birth_date||!p.gender||!p.interested_in){say('Complete name, birth date, gender and who you are interested in.');return}
   const today=new Date(),cutoff=new Date(Date.UTC(today.getUTCFullYear()-18,today.getUTCMonth(),today.getUTCDate())).toISOString().slice(0,10);
