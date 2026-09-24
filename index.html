@@ -65,7 +65,42 @@ $$('.toggle').forEach(t=>t.onclick=()=>t.classList.toggle('on'));renderPeople();
 </script><script>
 (()=> {
  const layer=document.getElementById('authLayer'),status=document.getElementById('authStatus');
- let sb=null,user=null,globalRoom=null;
+ let sb=null,user=null,globalRoom=null,crewCards=[],crewIndex=0;
+ async function loadCrewCards(){
+  if(!sb||!user)return;
+  const {data,error}=await sb.from('profiles').select('id,display_name,intent,ship_name,department,bio,avatar_url,is_verified,show_ship,show_department').neq('id',user.id).limit(60);
+  if(error){say('Could not load crew profiles: '+error.message);return}
+  crewCards=(data||[]).filter(p=>p.display_name);crewIndex=0;showCrewCard();
+ }
+ function showCrewCard(){
+  if(!crewCards.length){document.getElementById('discoverName').textContent=user?'No crew profiles yet':'Demo profiles';document.getElementById('discoverMeta').textContent=user?'Invite crew members to join CrewMatch.':'Connect and sign in to discover real crew.';document.getElementById('discoverBio').textContent='';return}
+  if(crewIndex>=crewCards.length)crewIndex=0;
+  const p=crewCards[crewIndex];
+  document.getElementById('discoverPhoto').style.backgroundImage="url('"+(p.avatar_url||'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=700&q=80')+"')";
+  document.getElementById('discoverName').textContent=p.display_name+(p.is_verified?' ✓':'');
+  document.getElementById('discoverMeta').textContent=[p.show_ship?p.ship_name:null,p.show_department?p.department:null].filter(Boolean).join(' · ');
+  document.getElementById('discoverBio').textContent=p.bio||'Ready to meet crew and explore new ports.';
+ }
+ document.getElementById('skipBtn').onclick=()=>{if(crewCards.length){crewIndex++;showCrewCard()}else{current++;renderPeople()}};
+ document.getElementById('likeBtn').onclick=async()=>{
+  if(!sb||!user){document.getElementById('authOpen').click();return}
+  if(!crewCards.length){await loadCrewCards();if(!crewCards.length)return}
+  const target=crewCards[crewIndex];
+  const {error}=await sb.from('likes').upsert({sender_id:user.id,receiver_id:target.id},{onConflict:'sender_id,receiver_id',ignoreDuplicates:true});
+  if(error){say('Like failed: '+error.message);return}
+  const {data:back,error:backError}=await sb.from('likes').select('sender_id').eq('sender_id',target.id).eq('receiver_id',user.id).maybeSingle();
+  if(backError){say('Like saved, but match check failed: '+backError.message);return}
+  if(back){
+   document.getElementById('matchFace').src=target.avatar_url||'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80';
+   document.querySelector('#match h1').textContent="It's a Match!";
+   document.querySelector('#match .muted').textContent='You and '+target.display_name+' liked each other.';
+   document.getElementById('match').classList.add('show');
+  }else{toast('Like sent');crewIndex++;showCrewCard()}
+ };
+ document.getElementById('profileBtn').onclick=()=>{if(!sb||!user){document.getElementById('authOpen').click();return}toast('Crew profile is shown on this card')};
+ document.getElementById('closeMatch').onclick=()=>{document.getElementById('match').classList.remove('show');crewIndex++;showCrewCard()};
+ document.getElementById('messageMatch').onclick=()=>{document.getElementById('match').classList.remove('show');say('Match saved. Private messages are the next connection step.');document.getElementById('authOpen').click()};
+
  const say=t=>{status.textContent=t};
  const cfg=()=>{try{return JSON.parse(localStorage.getItem('crewmatchSupabase')||'null')}catch{return null}};
  function setTab(tab){document.querySelectorAll('[data-auth-tab]').forEach(b=>b.classList.toggle('on',b.dataset.authTab===tab));document.getElementById('connectPane').style.display=tab==='connect'?'block':'none';document.getElementById('accountPane').style.display=tab==='account'?'block':'none';document.getElementById('authTitle').textContent=tab==='connect'?'Connect CrewMatch':'Crew account';document.getElementById('authSub').textContent=tab==='connect'?'Add your Supabase project details to enable real accounts and shared chat.':'Create an account for crew members aged 18 and over.';say('')}
@@ -139,6 +174,6 @@ $$('.toggle').forEach(t=>t.onclick=()=>t.classList.toggle('on'));renderPeople();
   const {error}=await sb.from('room_messages').insert({room_id:globalRoom,sender_id:user.id,body});
   if(error){say('Message not sent: '+error.message);return}input.value='';await loadGlobalChat()
  };
- sb&&restoreSession();
+ if(sb){restoreSession();loadCrewCards()}
 })();
 </script></body></html>
