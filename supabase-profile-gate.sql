@@ -128,9 +128,9 @@ for insert to authenticated with check (
 create or replace function public.crewmatch_setup_status()
 returns text
 language sql stable security invoker set search_path = ''
-as $
+as $$
   select 'adult-profile-gate-v1'::text;
-$;
+$$;
 revoke all on function public.crewmatch_setup_status() from public;
 grant execute on function public.crewmatch_setup_status() to anon, authenticated;
 
