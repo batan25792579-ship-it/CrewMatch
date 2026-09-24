@@ -64,6 +64,12 @@ $$;
 revoke all on function public.save_crew_profile(text,date,text,text,public.connection_intent,text,text) from public, anon;
 grant execute on function public.save_crew_profile(text,date,text,text,public.connection_intent,text,text) to authenticated;
 
+-- Policy helpers are private to signed-in requests; anon users cannot call them via RPC.
+revoke all on function public.is_match(uuid,uuid) from public, anon;
+revoke all on function public.not_blocked(uuid,uuid) from public, anon;
+grant execute on function public.is_match(uuid,uuid) to authenticated;
+grant execute on function public.not_blocked(uuid,uuid) to authenticated;
+
 -- The RPC above is the only public-client path to create or edit a crew profile.
 -- It cannot set is_verified; only an administrator with database privileges can.
 drop policy if exists "create own profile" on public.profiles;
