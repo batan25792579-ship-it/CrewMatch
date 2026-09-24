@@ -124,5 +124,15 @@ for insert to authenticated with check (
   and public.not_blocked(sender_id, receiver_id)
 );
 
+-- A harmless public readiness check for the browser. Missing function means upgrade is pending.
+create or replace function public.crewmatch_setup_status()
+returns text
+language sql stable security invoker set search_path = ''
+as $
+  select 'adult-profile-gate-v1'::text;
+$;
+revoke all on function public.crewmatch_setup_status() from public;
+grant execute on function public.crewmatch_setup_status() to anon, authenticated;
+
 notify pgrst, 'reload schema';
 commit;
