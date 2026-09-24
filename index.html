@@ -32,7 +32,7 @@
 <section class="screen" id="matches"><div class="top-row"><h2>Your Matches</h2><button class="auth-trigger" id="refreshMatches">Refresh</button></div><p class="muted">People who liked you back</p><div class="card ship-card" id="matchesList"><p class="muted">Sign in to see your matches.</p></div></section>
 <section class="screen" id="direct"><button class="room-tabs" style="border:0;background:none;color:var(--cyan);padding:0" onclick="go('matches')">← All matches</button><h2 id="directTitle">Private chat</h2><div class="messages" id="directFeed"></div><form class="composer" id="directForm"><input id="directInput" placeholder="Write a private message…" maxlength="1000" autocomplete="off"><button class="send">➤</button></form><p class="muted" style="font-size:12px">Private messages are available only after a mutual Match.</p></section>
 <section class="screen" id="ship"><h2 id="shipTitle">Your ship</h2><p class="muted" id="shipStatus">Sign in and add a ship to see your crew community.</p><div class="card ship-card"><h3>About this community</h3><p>Only crew members who choose to show their ship appear here. Never post cabin numbers or work schedules.</p></div><div class="section-title"><h3>Crew members</h3></div><div class="card ship-card" id="shipMembers">Sign in to see your ship community.</div></section>
-<section class="screen" id="profile"><div class="profile-head"><h1 id="myName">Sign in to CrewMatch</h1><p class="muted" id="myMeta">Your profile will appear here.</p></div><div class="card ship-card"><h3>Your connection goal</h3><p id="myIntent">Create a profile to meet crew.</p><p class="muted">Private messages open after a mutual like. Your birth date stays private.</p><button class="secondary" id="signOut" style="display:none">Log out</button></div></section>
+<section class="screen" id="profile"><div class="profile-head"><h1 id="myName">Sign in to CrewMatch</h1><p class="muted" id="myMeta">Your profile will appear here.</p></div><div class="card ship-card"><h3>Your connection goal</h3><p id="myIntent">Create a profile to meet crew.</p><p class="muted">Private messages open after a mutual like. Your birth date stays private.</p><button class="primary" id="editProfile" style="display:none;width:100%">Edit profile</button><button class="secondary" id="signOut" style="display:none">Log out</button></div></section>
 </main>
 <div class="auth-layer" id="authLayer"><div class="auth-box"><button class="auth-close" id="authClose">×</button><h2 id="authTitle">Connect CrewMatch</h2><p class="muted" id="authSub">Add the Supabase Project URL and publishable key to enable real accounts and chat.</p>
 <div class="auth-tabs"><button class="on" data-auth-tab="connect">Setup</button><button data-auth-tab="account">Account</button></div>
@@ -159,6 +159,7 @@ $('#chatForm').onsubmit=e=>e.preventDefault();
    document.getElementById('myMeta').textContent=[profile.ship_name,profile.department].filter(Boolean).join(' · ')||'Crew profile';
    document.getElementById('myIntent').textContent={dating:'Dating',friends:'Friends',both:'Friends and dating'}[profile.intent]||'Friends and dating';
    document.getElementById('signOut').style.display='block';
+   document.getElementById('editProfile').style.display='block';
    say('Signed in as '+profile.display_name+'.');
    await Promise.all([loadCrewCards(),loadShipCrew(profile),loadGlobalChat(),loadMatches()])
   }
@@ -263,6 +264,22 @@ $('#chatForm').onsubmit=e=>e.preventDefault();
  };
  document.getElementById('refreshMatches').onclick=()=>{
   if(!sb||!user){document.getElementById('authOpen').click();return}loadMatches()
+ };
+ document.getElementById('editProfile').onclick=async()=>{
+  if(!sb||!user){document.getElementById('authOpen').click();return}
+  const {data:p,error}=await sb.from('profiles').select('display_name,gender,interested_in,intent,ship_name,department').eq('id',user.id).single();
+  if(error){layer.classList.add('show');setTab('account');say('Could not load your profile: '+error.message);return}
+  const {data:privateProfile,error:privateError}=await sb.from('profile_private').select('birth_date').eq('id',user.id).maybeSingle();
+  if(privateError){layer.classList.add('show');setTab('account');say('Could not load birth date: '+privateError.message);return}
+  document.getElementById('pName').value=p.display_name||'';
+  document.getElementById('pDob').value=privateProfile?.birth_date||'';
+  document.getElementById('pGender').value=p.gender||'';
+  document.getElementById('pInterested').value=p.interested_in||'';
+  document.getElementById('pIntent').value=p.intent||'both';
+  document.getElementById('pShip').value=p.ship_name||'';
+  document.getElementById('pDept').value=p.department||'';
+  layer.classList.add('show');setTab('account');document.getElementById('profileFields').style.display='block';
+  document.getElementById('profileFields').scrollIntoView({block:'nearest'})
  };
  document.getElementById('signOut').onclick=async()=>{
   if(!sb)return;
