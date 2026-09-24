@@ -94,7 +94,7 @@ create index likes_receiver_idx on public.likes(receiver_id);
 create or replace function public.is_match(a uuid, b uuid)
 returns boolean language sql stable security definer set search_path = public
 as $$
-  select exists(
+  select auth.uid() in (a,b) and exists(
     select 1 from public.likes x
     join public.likes y on y.sender_id=x.receiver_id and y.receiver_id=x.sender_id
     where x.sender_id=a and x.receiver_id=b
@@ -104,7 +104,7 @@ $$;
 create or replace function public.not_blocked(a uuid, b uuid)
 returns boolean language sql stable security definer set search_path = public
 as $$
-  select not exists(
+  select auth.uid() in (a,b) and not exists(
     select 1 from public.blocks
     where (blocker_id=a and blocked_id=b) or (blocker_id=b and blocked_id=a)
   );
