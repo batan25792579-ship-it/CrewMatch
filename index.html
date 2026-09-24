@@ -5,7 +5,7 @@
 <meta name="theme-color" content="#061726"><title>CrewMatch — Meet crew onboard & ashore</title>
 <style>
 :root{--bg:#061726;--panel:#0b2538;--card:#103149;--line:#1b455f;--cyan:#25d5e7;--pink:#ff557d;--text:#f6fbff;--muted:#93aec0;--green:#37dc8a}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% -10%,#164764 0,#061726 38%);color:var(--text);font:15px/1.45 Inter,system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}button,input{font:inherit}.app{max-width:480px;margin:auto;min-height:100vh;padding:0 16px 92px}.top{position:sticky;top:0;z-index:5;padding:18px 0 12px;background:linear-gradient(#061726 82%,transparent)}.brand{display:flex;align-items:center;gap:10px;font-size:24px;font-weight:850}.logo{position:relative;width:38px;height:32px}.logo:before,.logo:after{content:"";position:absolute;width:21px;height:28px;border:5px solid;border-radius:16px 16px 12px 12px;transform:rotate(-45deg)}.logo:before{left:2px;border-color:var(--pink)}.logo:after{right:1px;border-color:var(--cyan);transform:rotate(45deg)}.cyan{color:var(--cyan)}h1,h2,h3,p{margin-top:0}.muted{color:var(--muted)}.screen{display:none;animation:in .22s ease}.screen.active{display:block}@keyframes in{from{opacity:.3;transform:translateY(5px)}}.hero,.card{border:1px solid var(--line);border-radius:22px;background:linear-gradient(145deg,#123852,#0a263a);box-shadow:0 14px 35px #0004}.hero{padding:20px;min-height:185px;display:flex;flex-direction:column;justify-content:flex-end;background:linear-gradient(0deg,#082235ee,#08223522),url('https://images.unsplash.com/photo-1548574505-5e239809ee19?auto=format&fit=crop&w=900&q=80') center/cover}.pill,.tag{display:inline-flex;align-items:center;gap:6px;width:max-content;border:1px solid #2b617d;border-radius:999px;padding:6px 10px;color:#c8e4f2;font-size:12px}.pill{background:#062032cc}.dot{width:8px;height:8px;border-radius:50%;background:var(--green)}.section-title{display:flex;justify-content:space-between;align-items:center;margin:22px 2px 10px}.avatars{display:flex;gap:12px;overflow:auto;padding-bottom:4px}.person{text-align:center;min-width:62px;font-size:11px;color:var(--muted)}.avatar{width:54px;height:54px;border-radius:50%;object-fit:cover;border:2px solid var(--cyan);display:block;margin:auto}.online{position:relative}.online:after{content:"";position:absolute;width:11px;height:11px;background:var(--green);border:2px solid var(--bg);border-radius:50%;right:2px;bottom:2px}.quick{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.quick .card{padding:14px 11px;min-height:118px;cursor:pointer}.quick b{display:block;margin:8px 0 4px}.icon{font-size:24px}.room-tabs{display:flex;gap:8px;overflow:auto;margin-bottom:16px}.room-tabs button{white-space:nowrap;border:1px solid var(--line);color:#c4dbe8;background:#0b2639;border-radius:999px;padding:8px 12px}.room-tabs .on{background:var(--cyan);color:#012330;border-color:var(--cyan);font-weight:800}.messages{display:flex;flex-direction:column;gap:14px}.msg{display:flex;gap:10px}.msg .avatar{width:42px;height:42px;margin:0}.bubble{padding:10px 13px;background:#173b53;border-radius:7px 16px 16px 16px;max-width:82%}.bubble small{display:block;color:var(--cyan);margin-bottom:3px}.composer{position:sticky;bottom:76px;display:flex;gap:8px;margin-top:18px;padding:10px;background:#092235ee;border:1px solid var(--line);border-radius:18px}.composer input{flex:1;border:0;outline:0;background:transparent;color:#fff}.send,.primary{border:0;background:var(--cyan);color:#03222d;font-weight:850;border-radius:14px;padding:10px 16px;cursor:pointer}.discover{overflow:hidden}.photo{height:48vh;min-height:380px;background:center/cover;position:relative}.photo:after{content:"";position:absolute;inset:35% 0 0;background:linear-gradient(transparent,#071827)}.profile-info{position:relative;margin-top:-145px;padding:18px;z-index:2}.tags{display:flex;flex-wrap:wrap;gap:7px}.actions{display:flex;justify-content:center;gap:24px;margin:18px}.round{width:62px;height:62px;border-radius:50%;border:1px solid #5d8297;background:#102d41;color:#fff;font-size:25px;cursor:pointer}.round.like{background:var(--pink);border-color:var(--pink);box-shadow:0 8px 24px #ff557d55}.match{position:fixed;inset:0;z-index:20;background:#061726f7;display:none;place-items:center;padding:30px;text-align:center}.match.show{display:grid}.match-card{max-width:390px}.match-faces{display:flex;justify-content:center;margin:28px}.match-faces img{width:120px;height:120px;border:4px solid var(--cyan);border-radius:50%;object-fit:cover}.match-faces img+img{margin-left:-22px;border-color:var(--pink)}.secondary{width:100%;border:1px solid var(--cyan);color:var(--cyan);background:transparent;border-radius:14px;padding:13px;font-weight:750;margin-top:10px}.ship-card{padding:18px}.member{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid #173c52}.member .avatar{margin:0}.profile-head{text-align:center;padding:12px}.profile-head .avatar{width:105px;height:105px}.setting{display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--line)}.toggle{width:42px;height:24px;border-radius:20px;background:#315267;position:relative}.toggle.on{background:var(--pink)}.toggle:after{content:"";position:absolute;width:18px;height:18px;border-radius:50%;background:white;top:3px;left:3px}.toggle.on:after{left:21px}.nav{position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:min(480px,100%);display:grid;grid-template-columns:repeat(5,1fr);background:#071d2ddd;border-top:1px solid var(--line);backdrop-filter:blur(18px);padding:8px 4px max(8px,env(safe-area-inset-bottom));z-index:10}.nav button{border:0;background:none;color:#8faabd;font-size:10px;padding:4px}.nav button span{display:block;font-size:21px}.nav button.active{color:var(--cyan)}.toast{position:fixed;top:18px;left:50%;transform:translateX(-50%) translateY(-80px);background:#e8fbff;color:#03222d;padding:11px 17px;border-radius:14px;font-weight:750;z-index:30;transition:.25s}.toast.show{transform:translateX(-50%) translateY(0)}.nav{grid-template-columns:repeat(6,1fr)}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% -10%,#164764 0,#061726 38%);color:var(--text);font:15px/1.45 Inter,system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}button,input{font:inherit}.app{max-width:480px;margin:auto;min-height:100vh;padding:0 16px 92px}.top{position:sticky;top:0;z-index:5;padding:18px 0 12px;background:linear-gradient(#061726 82%,transparent)}.brand{display:flex;align-items:center;gap:10px;font-size:24px;font-weight:850}.logo{position:relative;width:38px;height:32px}.logo:before,.logo:after{content:"";position:absolute;width:21px;height:28px;border:5px solid;border-radius:16px 16px 12px 12px;transform:rotate(-45deg)}.logo:before{left:2px;border-color:var(--pink)}.logo:after{right:1px;border-color:var(--cyan);transform:rotate(45deg)}.cyan{color:var(--cyan)}h1,h2,h3,p{margin-top:0}.muted{color:var(--muted)}.screen{display:none;animation:in .22s ease}.screen.active{display:block}@keyframes in{from{opacity:.3;transform:translateY(5px)}}.hero,.card{border:1px solid var(--line);border-radius:22px;background:linear-gradient(145deg,#123852,#0a263a);box-shadow:0 14px 35px #0004}.hero{padding:20px;min-height:185px;display:flex;flex-direction:column;justify-content:flex-end;background:linear-gradient(0deg,#082235ee,#08223522),url('https://images.unsplash.com/photo-1548574505-5e239809ee19?auto=format&fit=crop&w=900&q=80') center/cover}.pill,.tag{display:inline-flex;align-items:center;gap:6px;width:max-content;border:1px solid #2b617d;border-radius:999px;padding:6px 10px;color:#c8e4f2;font-size:12px}.pill{background:#062032cc}.dot{width:8px;height:8px;border-radius:50%;background:var(--green)}.section-title{display:flex;justify-content:space-between;align-items:center;margin:22px 2px 10px}.avatars{display:flex;gap:12px;overflow:auto;padding-bottom:4px}.person{text-align:center;min-width:62px;font-size:11px;color:var(--muted)}.avatar{width:54px;height:54px;border-radius:50%;object-fit:cover;border:2px solid var(--cyan);display:block;margin:auto}.online{position:relative}.quick{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.quick .card{padding:14px 11px;min-height:118px;cursor:pointer}.quick b{display:block;margin:8px 0 4px}.icon{font-size:24px}.room-tabs{display:flex;gap:8px;overflow:auto;margin-bottom:16px}.room-tabs button{white-space:nowrap;border:1px solid var(--line);color:#c4dbe8;background:#0b2639;border-radius:999px;padding:8px 12px}.room-tabs .on{background:var(--cyan);color:#012330;border-color:var(--cyan);font-weight:800}.messages{display:flex;flex-direction:column;gap:14px}.msg{display:flex;gap:10px}.msg .avatar{width:42px;height:42px;margin:0}.bubble{padding:10px 13px;background:#173b53;border-radius:7px 16px 16px 16px;max-width:82%}.bubble small{display:block;color:var(--cyan);margin-bottom:3px}.composer{position:sticky;bottom:76px;display:flex;gap:8px;margin-top:18px;padding:10px;background:#092235ee;border:1px solid var(--line);border-radius:18px}.composer input{flex:1;border:0;outline:0;background:transparent;color:#fff}.send,.primary{border:0;background:var(--cyan);color:#03222d;font-weight:850;border-radius:14px;padding:10px 16px;cursor:pointer}.discover{overflow:hidden}.photo{height:48vh;min-height:380px;background:linear-gradient(155deg,#17405a,#092336) center/cover;position:relative}.photo:after{content:"";position:absolute;inset:35% 0 0;background:linear-gradient(transparent,#071827)}.profile-info{position:relative;margin-top:-145px;padding:18px;z-index:2}.tags{display:flex;flex-wrap:wrap;gap:7px}.actions{display:flex;justify-content:center;gap:24px;margin:18px}.round{width:62px;height:62px;border-radius:50%;border:1px solid #5d8297;background:#102d41;color:#fff;font-size:25px;cursor:pointer}.round.like{background:var(--pink);border-color:var(--pink);box-shadow:0 8px 24px #ff557d55}.match{position:fixed;inset:0;z-index:20;background:#061726f7;display:none;place-items:center;padding:30px;text-align:center}.match.show{display:grid}.match-card{max-width:390px}.match-faces{display:flex;justify-content:center;margin:28px}.match-faces img{width:120px;height:120px;border:4px solid var(--cyan);border-radius:50%;object-fit:cover}.match-faces img{margin-left:-22px;border-color:var(--pink)}.match-placeholder{width:120px;height:120px;display:grid;place-items:center;border:4px solid var(--cyan);border-radius:50%;background:#123852;font-weight:750}.secondary{width:100%;border:1px solid var(--cyan);color:var(--cyan);background:transparent;border-radius:14px;padding:13px;font-weight:750;margin-top:10px}.ship-card{padding:18px}.member{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid #173c52}.member .avatar{margin:0}.profile-head{text-align:center;padding:12px}.profile-head .avatar{width:105px;height:105px}.setting{display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--line)}.toggle{width:42px;height:24px;border-radius:20px;background:#315267;position:relative}.toggle.on{background:var(--pink)}.toggle:after{content:"";position:absolute;width:18px;height:18px;border-radius:50%;background:white;top:3px;left:3px}.toggle.on:after{left:21px}.nav{position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:min(480px,100%);display:grid;grid-template-columns:repeat(5,1fr);background:#071d2ddd;border-top:1px solid var(--line);backdrop-filter:blur(18px);padding:8px 4px max(8px,env(safe-area-inset-bottom));z-index:10}.nav button{border:0;background:none;color:#8faabd;font-size:10px;padding:4px}.nav button span{display:block;font-size:21px}.nav button.active{color:var(--cyan)}.toast{position:fixed;top:18px;left:50%;transform:translateX(-50%) translateY(-80px);background:#e8fbff;color:#03222d;padding:11px 17px;border-radius:14px;font-weight:750;z-index:30;transition:.25s}.toast.show{transform:translateX(-50%) translateY(0)}.nav{grid-template-columns:repeat(6,1fr)}
 @media(min-width:700px){body{padding:20px}.app{min-height:900px;border:1px solid #2b5369;border-radius:35px;overflow:hidden;box-shadow:0 30px 80px #0008}.nav{bottom:20px;border-radius:0 0 35px 35px}}
 </style>
 <style>
@@ -26,70 +26,87 @@
 </head>
 <body><div class="toast" id="toast">Done</div><main class="app">
 <header class="top"><div class="top-row"><div class="brand"><i class="logo"></i>Crew<span class="cyan">Match</span></div><button class="auth-trigger" id="authOpen">Connect</button></div></header>
-<section class="screen active" id="home"><p class="muted">Good evening, Alex</p><div class="hero"><span class="pill">CURRENT SHIP</span><h1 style="margin:9px 0 0">Sun Princess</h1><span>At sea · Next port in 2 days</span></div><div class="section-title"><h3>Online crew</h3><span class="cyan">248 online</span></div><div class="avatars" id="avatars"></div><div class="section-title"><h3>Connect</h3></div><div class="quick"><div class="card" data-go="chat"><span class="icon">💬</span><b>Global Chat</b><small class="muted">Crew worldwide</small></div><div class="card" data-go="ship"><span class="icon">🚢</span><b>My Ship</b><small class="muted">Sun Princess</small></div><div class="card" data-go="discover"><span class="icon">🌴</span><b>Discover</b><small class="muted">Meet new crew</small></div></div></section>
-<section class="screen" id="chat"><h2>Global Crew Chat</h2><p class="muted"><span class="dot" style="display:inline-block"></span> 248 crew members online</p><div class="room-tabs"><button class="on">Global</button><button>My Ship</button><button>Dating</button><button>Shore Leave</button></div><div class="messages" id="messages"></div><form class="composer" id="chatForm"><input id="chatInput" placeholder="Type a message…" autocomplete="off"><button class="send">➤</button></form></section>
-<section class="screen" id="discover"><h2>Discover</h2><p class="muted">Meet amazing crew from around the world</p><div class="card discover"><div class="photo" id="discoverPhoto"></div><div class="profile-info"><span class="pill"><i class="dot"></i> Online now</span><h1 id="discoverName" style="margin:10px 0 2px"></h1><p id="discoverMeta"></p><div class="tags"><span class="tag">❤ Dating</span><span class="tag">👥 Friends</span><span class="tag">🌴 Shore Leave</span></div><p id="discoverBio" style="margin-top:13px"></p></div></div><div class="actions"><button class="round" id="skipBtn">×</button><button class="round like" id="likeBtn">♥</button><button class="round" id="profileBtn">♙</button></div></section>
-<section class="screen" id="matches"><h2>Your Matches</h2><p class="muted">People who liked you back</p><div class="card ship-card" id="matchesList"><p class="muted">Sign in to see your matches.</p></div></section>
-<section class="screen" id="direct"><button class="room-tabs" style="border:0;background:none;color:var(--cyan);padding:0" onclick="go('matches')">← All matches</button><h2 id="directTitle">Private chat</h2><div class="messages" id="directFeed"></div><form class="composer" id="directForm"><input id="directInput" placeholder="Write a private message…" autocomplete="off"><button class="send">➤</button></form><p class="muted" style="font-size:12px">Private messages are available only after a mutual Match.</p></section>
-<section class="screen" id="ship"><h2>Sun Princess</h2><p class="muted">Your ship community · 63 members</p><div class="card ship-card"><h3>Ship announcements</h3><p>Welcome aboard! Use this space to connect with crew. Never post cabin numbers or work schedules.</p></div><div class="section-title"><h3>Crew online</h3></div><div class="card ship-card" id="shipMembers"></div></section>
-<section class="screen" id="profile"><div class="profile-head"><div class="online" style="width:max-content;margin:auto"><img class="avatar" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80"></div><h1 style="margin:10px 0 2px">Alex, 31 ✓</h1><p class="muted">Sun Princess · Food & Beverage</p><div class="tags" style="justify-content:center"><span class="tag">✈ Travel</span><span class="tag">♫ Music</span><span class="tag">◉ Fitness</span></div></div><div class="card ship-card"><h3>Looking for</h3><div class="setting"><span>❤ Dating</span><i class="toggle on"></i></div><div class="setting"><span>👥 Friends</span><i class="toggle on"></i></div><h3 style="margin-top:22px">Privacy & safety</h3><div class="setting"><span>Visible to verified crew only</span><i class="toggle on"></i></div><div class="setting"><span>Allow messages without match</span><i class="toggle"></i></div></div></section>
+<section class="screen active" id="home"><p class="muted" id="homeGreeting">Sign in to meet real crew members</p><div class="hero"><span class="pill">YOUR SHIP</span><h1 id="homeShip" style="margin:9px 0 0">Your ship</h1><span id="homeShipMeta">Add a ship to your crew profile</span></div><div class="section-title"><h3>Crew profiles</h3><span class="cyan" id="crewCount">Sign in to see crew</span></div><div class="avatars" id="avatars"></div><div class="section-title"><h3>Connect</h3></div><div class="quick"><div class="card" data-go="chat"><span class="icon">💬</span><b>Global Chat</b><small class="muted">Crew worldwide</small></div><div class="card" data-go="ship"><span class="icon">🚢</span><b>My Ship</b><small class="muted" id="homeShipLink">Your ship</small></div><div class="card" data-go="discover"><span class="icon">🌴</span><b>Discover</b><small class="muted">Meet new crew</small></div></div></section>
+<section class="screen" id="chat"><h2>Global Crew Chat</h2><p class="muted" id="chatStatus">Sign in to see crew messages.</p><div class="messages" id="messages"></div><form class="composer" id="chatForm"><input id="chatInput" placeholder="Type a message…" maxlength="1000" autocomplete="off"><button class="send" aria-label="Send message">➤</button></form></section>
+<section class="screen" id="discover"><div class="top-row"><h2>Discover</h2><button class="auth-trigger" id="refreshCrew">Refresh</button></div><p class="muted">Meet crew members with real accounts</p><div class="card discover"><div class="photo" id="discoverPhoto"></div><div class="profile-info"><span class="pill">Crew profile</span><h1 id="discoverName" style="margin:10px 0 2px">Sign in to discover crew</h1><p id="discoverMeta"></p><div class="tags" id="discoverTags"></div><p id="discoverBio" style="margin-top:13px"></p></div></div><div class="actions"><button class="round" id="skipBtn" aria-label="Skip profile">×</button><button class="round like" id="likeBtn" aria-label="Like profile">♥</button><button class="round" id="profileBtn" aria-label="Profile details">ⓘ</button></div></section>
+<section class="screen" id="matches"><div class="top-row"><h2>Your Matches</h2><button class="auth-trigger" id="refreshMatches">Refresh</button></div><p class="muted">People who liked you back</p><div class="card ship-card" id="matchesList"><p class="muted">Sign in to see your matches.</p></div></section>
+<section class="screen" id="direct"><button class="room-tabs" style="border:0;background:none;color:var(--cyan);padding:0" onclick="go('matches')">← All matches</button><h2 id="directTitle">Private chat</h2><div class="messages" id="directFeed"></div><form class="composer" id="directForm"><input id="directInput" placeholder="Write a private message…" maxlength="1000" autocomplete="off"><button class="send">➤</button></form><p class="muted" style="font-size:12px">Private messages are available only after a mutual Match.</p></section>
+<section class="screen" id="ship"><h2 id="shipTitle">Your ship</h2><p class="muted" id="shipStatus">Sign in and add a ship to see your crew community.</p><div class="card ship-card"><h3>About this community</h3><p>Only crew members who choose to show their ship appear here. Never post cabin numbers or work schedules.</p></div><div class="section-title"><h3>Crew members</h3></div><div class="card ship-card" id="shipMembers">Sign in to see your ship community.</div></section>
+<section class="screen" id="profile"><div class="profile-head"><h1 id="myName">Sign in to CrewMatch</h1><p class="muted" id="myMeta">Your profile will appear here.</p></div><div class="card ship-card"><h3>Your connection goal</h3><p id="myIntent">Create a profile to meet crew.</p><p class="muted">Private messages open after a mutual like. Your birth date stays private.</p><button class="secondary" id="signOut" style="display:none">Log out</button></div></section>
 </main>
-<div class="auth-layer" id="authLayer"><div class="auth-box"><button class="auth-close" id="authClose">×</button><h2 id="authTitle">Connect CrewMatch</h2><p class="muted" id="authSub">Add your Supabase project details to enable real accounts and shared chat.</p>
+<div class="auth-layer" id="authLayer"><div class="auth-box"><button class="auth-close" id="authClose">×</button><h2 id="authTitle">Connect CrewMatch</h2><p class="muted" id="authSub">Add the Supabase Project URL and publishable key to enable real accounts and chat.</p>
 <div class="auth-tabs"><button class="on" data-auth-tab="connect">Setup</button><button data-auth-tab="account">Account</button></div>
 <div id="connectPane"><label>Supabase Project URL</label><input id="sbUrl" placeholder="https://your-project.supabase.co" autocomplete="url"><label>Publishable key</label><input id="sbKey" placeholder="sb_publishable_..." autocomplete="off"><button class="primary" id="saveSb" style="width:100%;margin-top:16px">Save connection</button><p class="muted" style="font-size:12px;margin-top:10px">Use only the Publishable key. Never enter a Secret or service_role key.</p></div>
 <div id="accountPane" style="display:none"><label>Email</label><input id="authEmail" type="email" autocomplete="email"><label>Password</label><input id="authPassword" type="password" autocomplete="current-password" minlength="8"><div class="auth-buttons"><button class="primary" id="signIn">Log in</button><button class="primary" id="signUp">Create account</button></div>
 <div id="profileFields" style="display:none"><hr style="border-color:var(--line);margin:18px 0"><h3>Finish your 18+ crew profile</h3><label>Display name</label><input id="pName" maxlength="40"><div class="auth-row"><div><label>Date of birth</label><input id="pDob" type="date"></div><div><label>Gender</label><input id="pGender" maxlength="40" placeholder="Enter gender"></div></div><label>Interested in</label><input id="pInterested" maxlength="80" placeholder="Who are you interested in?"><label>Connection goal</label><select id="pIntent"><option value="both">Friends and dating</option><option value="dating">Dating</option><option value="friends">Friends</option></select><label>Ship (optional)</label><input id="pShip" maxlength="80"><label>Department (optional)</label><input id="pDept" maxlength="80"><button class="primary" id="saveProfile" style="width:100%;margin-top:14px">Save crew profile</button></div></div>
-<div class="auth-status" id="authStatus" role="status"></div></div></div><div class="match" id="match"><div class="match-card"><div class="brand" style="justify-content:center"><i class="logo"></i>Crew<span class="cyan">Match</span></div><div class="match-faces"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80"><img id="matchFace"></div><h1>It's a Match!</h1><p class="muted">You liked each other. Start with a respectful hello.</p><button class="primary" style="width:100%;padding:14px" id="messageMatch">Send a message</button><button class="secondary" id="closeMatch">Keep discovering</button></div></div>
+<div class="auth-status" id="authStatus" role="status"></div></div></div><div class="match" id="match"><div class="match-card"><div class="brand" style="justify-content:center"><i class="logo"></i>Crew<span class="cyan">Match</span></div><div class="match-faces"><div class="match-placeholder">You</div><img id="matchFace" alt="Matched crew member"></div><h1>It's a Match!</h1><p class="muted">You liked each other. Start with a respectful hello.</p><button class="primary" style="width:100%;padding:14px" id="messageMatch">Send a message</button><button class="secondary" id="closeMatch">Keep discovering</button></div></div>
 <nav class="nav"><button class="active" data-go="home"><span>⌂</span>Home</button><button data-go="discover"><span>♡</span>Discover</button><button data-go="chat"><span>◌</span>Chat</button><button data-go="matches"><span>♥</span>Matches</button><button data-go="ship"><span>♜</span>Ship</button><button data-go="profile"><span>♙</span>Profile</button></nav>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>
-const people=[
-{name:'Sofia, 29',ship:'MSC Seaview',dept:'Guest Services',img:'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=700&q=80',bio:'Always up for sunset drinks, good conversations and new ports.'},
-{name:'Anna, 27',ship:'Sun Princess',dept:'Bar Department',img:'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=700&q=80',bio:'Coffee, live music and spontaneous shore leave plans.'},
-{name:'Priya, 28',ship:'Celebrity Beyond',dept:'Housekeeping',img:'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=700&q=80',bio:'Exploring the world one contract at a time.'},
-{name:'Marco, 30',ship:'Sun Princess',dept:'Engineering',img:'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=700&q=80',bio:'Gym, good food and discovering quiet places in port.'}
-];let current=0;
 const $=s=>document.querySelector(s), $$=s=>document.querySelectorAll(s);
 function go(id){$$('.screen').forEach(x=>x.classList.toggle('active',x.id===id));$$('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.go===id));scrollTo(0,0)}
 $$('[data-go]').forEach(x=>x.onclick=()=>go(x.dataset.go));
-function toast(t){$('#toast').textContent=t;$('#toast').classList.add('show');setTimeout(()=>$('#toast').classList.remove('show'),1700)}
-function renderPeople(){const p=people[current%people.length];$('#discoverPhoto').style.backgroundImage="url('"+p.img+"')";$('#discoverName').textContent=p.name+' ✓';$('#discoverMeta').textContent=p.ship+' · '+p.dept;$('#discoverBio').textContent=p.bio;$('#matchFace').src=p.img}
-$('#skipBtn').onclick=()=>{current++;renderPeople()};
-$('#profileBtn').onclick=()=>toast('Full profile opened');
-$('#likeBtn').onclick=()=>{$('#match').classList.add('show');localStorage.setItem('crewmatchMatch',people[current%people.length].name)};
-$('#closeMatch').onclick=()=>{$('#match').classList.remove('show');current++;renderPeople()};
-$('#messageMatch').onclick=()=>{$('#match').classList.remove('show');go('chat');$('#chatInput').placeholder='Message your new match…'};
-const initial=[
-{name:'Anna, 27',dept:'Bar Department',img:people[1].img,text:'Anyone going ashore in Barcelona tonight? 🇪🇸'},
-{name:'Marco, 30',dept:'Engineering',img:people[3].img,text:"A few of us are checking out a tapas spot near the port. You're welcome to join!"},
-{name:'Priya, 28',dept:'Housekeeping',img:people[2].img,text:"That sounds great! I'm in too. 😊"}
-];
-function addMessage(m,self=false){const d=document.createElement('div');d.className='msg';d.innerHTML=(self?'':'<img class="avatar" src="'+m.img+'">')+'<div class="bubble" style="'+(self?'margin-left:auto;background:#18bcd0;color:#03222d':'')+'">'+(self?'':'<small>'+m.name+' · '+m.dept+'</small>')+m.text+'</div>';$('#messages').append(d)}
-initial.forEach(m=>addMessage(m));try{JSON.parse(localStorage.getItem('crewmatchMessages')||'[]').forEach(m=>addMessage(m,true))}catch(e){}
-$('#chatForm').onsubmit=e=>{e.preventDefault();const input=$('#chatInput'),text=input.value.trim();if(!text)return;const m={text};addMessage(m,true);const a=JSON.parse(localStorage.getItem('crewmatchMessages')||'[]');a.push(m);localStorage.setItem('crewmatchMessages',JSON.stringify(a));input.value='';toast('Message sent')};
-$('#avatars').innerHTML=people.map(p=>'<div class="person"><div class="online"><img class="avatar" src="'+p.img+'"></div>'+p.name.split(',')[0]+'</div>').join('');
-$('#shipMembers').innerHTML=people.slice(1).map(p=>'<div class="member"><div class="online"><img class="avatar" src="'+p.img+'"></div><div><b>'+p.name+'</b><br><small class="muted">'+p.dept+'</small></div></div>').join('');
-$$('.room-tabs button').forEach(b=>b.onclick=()=>{$$('.room-tabs button').forEach(x=>x.classList.remove('on'));b.classList.add('on');toast(b.textContent+' room selected')});
-$$('.toggle').forEach(t=>t.onclick=()=>t.classList.toggle('on'));renderPeople();
+function toast(t){$('#toast').textContent=t;$('#toast').classList.add('show');setTimeout(()=>$('#toast').classList.remove('show'),2200)}
+$('#chatForm').onsubmit=e=>e.preventDefault();
 </script><script>
 (()=> {
  const layer=document.getElementById('authLayer'),status=document.getElementById('authStatus');
  let sb=null,user=null,globalRoom=null,crewCards=[],crewIndex=0,selectedRecipient=null;
+ const placeholderAvatar='data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="#16405b"/><circle cx="60" cy="42" r="22" fill="#8fc4d5"/><path d="M17 113c0-28 19-43 43-43s43 15 43 43" fill="#8fc4d5"/></svg>');
+ const avatar=url=>url&&url.startsWith('https://')?url:placeholderAvatar;
+ function addCrewMember(box,p,click){
+  const row=document.createElement(click?'button':'div');row.className='member';
+  if(click){row.type='button';row.style='width:100%;text-align:left;background:transparent;color:var(--text);border:0;cursor:pointer';row.onclick=()=>openDirect(p)}
+  const image=document.createElement('img');image.className='avatar';image.src=avatar(p.avatar_url);image.alt='';
+  const info=document.createElement('div'),name=document.createElement('b'),detail=document.createElement('small');
+  name.textContent=p.display_name;detail.className='muted';
+  detail.textContent=[p.show_ship?p.ship_name:null,p.show_department?p.department:null].filter(Boolean).join(' · ')||'Crew member';
+  info.append(name,document.createElement('br'),detail);row.append(image,info);box.append(row)
+ }
  async function loadCrewCards(){
   if(!sb||!user)return;
   const {data,error}=await sb.from('profiles').select('id,display_name,intent,ship_name,department,bio,avatar_url,is_verified,show_ship,show_department').neq('id',user.id).limit(60);
   if(error){say('Could not load crew profiles: '+error.message);return}
   crewCards=(data||[]).filter(p=>p.display_name);crewIndex=0;showCrewCard();
+  document.getElementById('crewCount').textContent=crewCards.length===60?'Showing 60 profiles':crewCards.length+' crew profiles';
+  const list=document.getElementById('avatars');list.replaceChildren();
+  crewCards.slice(0,10).forEach(p=>{
+   const tile=document.createElement('div');tile.className='person';
+   const image=document.createElement('img');image.className='avatar';image.src=avatar(p.avatar_url);image.alt='';
+   const name=document.createElement('span');name.textContent=p.display_name;tile.append(image,name);list.append(tile)
+  });
  }
  function showCrewCard(){
-  if(!crewCards.length){document.getElementById('discoverName').textContent=user?'No crew profiles yet':'Demo profiles';document.getElementById('discoverMeta').textContent=user?'Invite crew members to join CrewMatch.':'Connect and sign in to discover real crew.';document.getElementById('discoverBio').textContent='';return}
+  const name=document.getElementById('discoverName'),meta=document.getElementById('discoverMeta'),bio=document.getElementById('discoverBio');
+  const photo=document.getElementById('discoverPhoto'),tags=document.getElementById('discoverTags');
+  tags.replaceChildren();document.getElementById('likeBtn').disabled=Boolean(user)&&!crewCards.length;
+  if(!crewCards.length){
+   photo.style.backgroundImage='none';name.textContent=user?'No crew profiles yet':'Sign in to discover crew';
+   meta.textContent=user?'Invite a crew member to join CrewMatch.':'Connect your crew account first.';bio.textContent='';return
+  }
   if(crewIndex>=crewCards.length)crewIndex=0;
-  const p=crewCards[crewIndex];
-  document.getElementById('discoverPhoto').style.backgroundImage="url('"+(p.avatar_url||'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=700&q=80')+"')";
-  document.getElementById('discoverName').textContent=p.display_name+(p.is_verified?' ✓':'');
-  document.getElementById('discoverMeta').textContent=[p.show_ship?p.ship_name:null,p.show_department?p.department:null].filter(Boolean).join(' · ');
-  document.getElementById('discoverBio').textContent=p.bio||'Ready to meet crew and explore new ports.';
+  const p=crewCards[crewIndex];photo.style.backgroundImage=p.avatar_url?'url("'+avatar(p.avatar_url).replaceAll('"','%22')+'")':'none';
+  name.textContent=p.display_name;
+  meta.textContent=[p.show_ship?p.ship_name:null,p.show_department?p.department:null].filter(Boolean).join(' · ');
+  bio.textContent=p.bio||'';
+  const tag=document.createElement('span');tag.className='tag';
+  tag.textContent=p.intent==='dating'?'❤ Dating':p.intent==='friends'?'👥 Friends':'❤ Dating · 👥 Friends';tags.append(tag)
  }
- document.getElementById('skipBtn').onclick=()=>{if(crewCards.length){crewIndex++;showCrewCard()}else{current++;renderPeople()}};
+ async function loadShipCrew(profile){
+  const ship=profile.ship_name;
+  document.getElementById('shipTitle').textContent=ship||'Your ship';
+  document.getElementById('homeShip').textContent=ship||'No ship selected';
+  document.getElementById('homeShipLink').textContent=ship||'Add ship to profile';
+  document.getElementById('homeShipMeta').textContent=ship?'Your crew community':'Add a ship to your crew profile';
+  const box=document.getElementById('shipMembers');box.replaceChildren();
+  if(!ship){document.getElementById('shipStatus').textContent='Add your ship to your profile to see crew who share their ship.';box.textContent='No ship selected.';return}
+  const {data,error}=await sb.from('profiles').select('id,display_name,ship_name,department,avatar_url,show_ship,show_department')
+   .eq('ship_name',ship).eq('show_ship',true).neq('id',user.id).limit(60);
+  if(error){document.getElementById('shipStatus').textContent='Could not load ship members.';box.textContent=error.message;return}
+  document.getElementById('shipStatus').textContent=(data||[]).length===60?'Showing 60 ship crew profiles':(data||[]).length+' crew members sharing this ship';
+  if(!data?.length){box.textContent='No other crew profiles sharing this ship yet.';return}
+  data.forEach(p=>addCrewMember(box,p,false))
+ }
+ document.getElementById('skipBtn').onclick=()=>{if(!user){document.getElementById('authOpen').click();return}if(!crewCards.length)return;crewIndex++;showCrewCard()};
  document.getElementById('likeBtn').onclick=async()=>{
   if(!sb||!user){document.getElementById('authOpen').click();return}
   if(!crewCards.length){await loadCrewCards();if(!crewCards.length)return}
@@ -100,20 +117,20 @@ $$('.toggle').forEach(t=>t.onclick=()=>t.classList.toggle('on'));renderPeople();
   if(backError){say('Like saved, but match check failed: '+backError.message);return}
   if(back){
    selectedRecipient=target;
-   document.getElementById('matchFace').src=target.avatar_url||'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80';
+   document.getElementById('matchFace').src=avatar(target.avatar_url);
    document.querySelector('#match h1').textContent="It's a Match!";
    document.querySelector('#match .muted').textContent='You and '+target.display_name+' liked each other.';
    document.getElementById('match').classList.add('show');
+   await loadMatches()
   }else{toast('Like sent');crewIndex++;showCrewCard()}
  };
- document.getElementById('profileBtn').onclick=()=>{if(!sb||!user){document.getElementById('authOpen').click();return}toast('Crew profile is shown on this card')};
+ document.getElementById('profileBtn').onclick=()=>toast('Profile details are shown on this card');
  document.getElementById('closeMatch').onclick=()=>{document.getElementById('match').classList.remove('show');crewIndex++;showCrewCard()};
- document.getElementById('messageMatch').onclick=()=>{document.getElementById('match').classList.remove('show');say('Match saved. Private messages are the next connection step.');document.getElementById('authOpen').click()};
 
  const say=t=>{status.textContent=t};
  const cfg=()=>{try{return JSON.parse(localStorage.getItem('crewmatchSupabase')||'null')}catch{return null}};
  function setTab(tab){document.querySelectorAll('[data-auth-tab]').forEach(b=>b.classList.toggle('on',b.dataset.authTab===tab));document.getElementById('connectPane').style.display=tab==='connect'?'block':'none';document.getElementById('accountPane').style.display=tab==='account'?'block':'none';document.getElementById('authTitle').textContent=tab==='connect'?'Connect CrewMatch':'Crew account';document.getElementById('authSub').textContent=tab==='connect'?'Add your Supabase project details to enable real accounts and shared chat.':'Create an account for crew members aged 18 and over.';say('')}
- function connect(c){if(!c||!c.url||!c.key)return false;if(!window.supabase){say('Connection library did not load. Refresh and try again.');return false}sb=window.supabase.createClient(c.url,c.key);return true}
+ function connect(c){if(!c||!c.url||!c.key)return false;if(!window.supabase){say('Connection library did not load. Refresh and try again.');return false}try{sb=window.supabase.createClient(c.url,c.key);return true}catch(e){say('Could not initialize connection: '+e.message);return false}}
  const saved=cfg();if(saved){document.getElementById('sbUrl').value=saved.url||'';document.getElementById('sbKey').value=saved.key||'';connect(saved)}
  document.getElementById('authOpen').onclick=()=>{layer.classList.add('show');setTab(sb?'account':'connect')};
  document.getElementById('authClose').onclick=()=>layer.classList.remove('show');
@@ -122,20 +139,29 @@ $$('.toggle').forEach(t=>t.onclick=()=>t.classList.toggle('on'));renderPeople();
  document.getElementById('saveSb').onclick=async()=>{
   const url=document.getElementById('sbUrl').value.trim().replace(/\/$/,''),key=document.getElementById('sbKey').value.trim();
   if(!/^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(url)||!key){say('Check the Project URL and Publishable key.');return}
-  const c={url,key};localStorage.setItem('crewmatchSupabase',JSON.stringify(c));
-  if(connect(c)){say('Connected. Now create or log into your crew account.');setTab('account');await restoreSession()}
+  const c={url,key};
+  if(connect(c)){
+    const {error}=await sb.from('rooms').select('id').limit(1);
+    if(error){sb=null;say('Project check failed: '+error.message+'. Check your key and SQL setup.');return}
+    localStorage.setItem('crewmatchSupabase',JSON.stringify(c));setTab('account');say('Connection verified. Create or log into your account.');await restoreSession()
+   }
  };
  async function restoreSession(){if(!sb)return;const {data}=await sb.auth.getSession();if(data.session){user=data.session.user;await afterLogin()}}
  async function afterLogin(){
-  document.getElementById('authOpen').textContent='My account';
-  const {data:profile,error}=await sb.from('profiles').select('id,display_name,intent,ship_name,department,avatar_url,show_ship,show_department').eq('id',user.id).maybeSingle();
-  if(error){say('Signed in, but profile lookup failed: '+error.message);return}
-  if(!profile){say('Account created. Complete the crew profile below.');document.getElementById('profileFields').style.display='block';document.getElementById('pName').value=user.user_metadata?.display_name||'';return}
-  say('Signed in as '+profile.display_name+'.');document.getElementById('authOpen').textContent=profile.display_name;
-  const heading=document.querySelector('#profile .profile-head h1');if(heading)heading.textContent=profile.display_name;
-  if(profile.ship_name){const homeShip=document.querySelector('#home .hero h1');if(homeShip)homeShip.textContent=profile.ship_name}
-  await loadGlobalChat();
- }
+   document.getElementById('authOpen').textContent='My account';
+   const {data:profile,error}=await sb.from('profiles').select('id,display_name,intent,ship_name,department,avatar_url,show_ship,show_department').eq('id',user.id).maybeSingle();
+   if(error){say('Signed in, but profile lookup failed: '+error.message);return}
+   if(!profile){say('Account ready. Complete your 18+ crew profile below.');document.getElementById('profileFields').style.display='block';document.getElementById('pName').value=user.user_metadata?.display_name||'';return}
+   document.getElementById('profileFields').style.display='none';
+   document.getElementById('authOpen').textContent=profile.display_name;
+   document.getElementById('homeGreeting').textContent='Welcome, '+profile.display_name;
+   document.getElementById('myName').textContent=profile.display_name;
+   document.getElementById('myMeta').textContent=[profile.ship_name,profile.department].filter(Boolean).join(' · ')||'Crew profile';
+   document.getElementById('myIntent').textContent={dating:'Dating',friends:'Friends',both:'Friends and dating'}[profile.intent]||'Friends and dating';
+   document.getElementById('signOut').style.display='block';
+   say('Signed in as '+profile.display_name+'.');
+   await Promise.all([loadCrewCards(),loadShipCrew(profile),loadGlobalChat(),loadMatches()])
+  }
  document.getElementById('signUp').onclick=async()=>{
   if(!sb){say('First connect the Supabase project in Setup.');return}
   const email=document.getElementById('authEmail').value.trim(),password=document.getElementById('authPassword').value;
@@ -155,12 +181,16 @@ $$('.toggle').forEach(t=>t.onclick=()=>t.classList.toggle('on'));renderPeople();
   if(!sb||!user){say('Log in first.');return}
   const p={id:user.id,display_name:document.getElementById('pName').value.trim(),birth_date:document.getElementById('pDob').value,gender:document.getElementById('pGender').value.trim(),interested_in:document.getElementById('pInterested').value.trim(),intent:document.getElementById('pIntent').value,ship_name:document.getElementById('pShip').value.trim()||null,department:document.getElementById('pDept').value.trim()||null};
   if(!p.display_name||!p.birth_date||!p.gender||!p.interested_in){say('Complete name, birth date, gender and who you are interested in.');return}
-  if(new Date(p.birth_date)>new Date(Date.now()-18*365.2425*86400000)){say('CrewMatch is for adults aged 18+.');return}
-  const {birth_date,...publicProfile}=p;
-  const {error}=await sb.from('profiles').upsert(publicProfile);
-  if(error){say(error.message);return}
-  const {error:privateError}=await sb.from('profile_private').upsert({id:user.id,birth_date});
-  if(privateError){say('Profile saved, but age check data failed: '+privateError.message);return}
+  const today=new Date(),cutoff=new Date(Date.UTC(today.getUTCFullYear()-18,today.getUTCMonth(),today.getUTCDate())).toISOString().slice(0,10);
+  if(p.birth_date>cutoff){say('CrewMatch is for adults aged 18+.');return}
+  const {error:rpcError}=await sb.rpc('save_crew_profile',{p_display_name:p.display_name,p_birth_date:p.birth_date,p_gender:p.gender,p_interested_in:p.interested_in,p_intent:p.intent,p_ship_name:p.ship_name,p_department:p.department});
+  if(rpcError?.code==='PGRST202'){
+   const {birth_date,...publicProfile}=p;
+   const {error}=await sb.from('profiles').upsert(publicProfile);
+   if(error){say('Profile could not be saved: '+error.message);return}
+   const {error:privateError}=await sb.from('profile_private').upsert({id:user.id,birth_date});
+   if(privateError){say('Profile saved, but age data failed: '+privateError.message);return}
+  }else if(rpcError){say('Profile could not be saved: '+rpcError.message);return}
   document.getElementById('profileFields').style.display='none';await afterLogin();
  };
  async function loadGlobalChat(){
@@ -168,17 +198,16 @@ $$('.toggle').forEach(t=>t.onclick=()=>t.classList.toggle('on'));renderPeople();
   const {data:rooms,error}=await sb.from('rooms').select('id,name').eq('kind','global').eq('is_active',true).limit(1);
   if(error){say('Chat setup error: '+error.message);return}
   globalRoom=rooms?.[0]?.id;if(!globalRoom){say('No Global Crew Chat room found. Run the SQL setup script.');return}
-  const {data:rows,error:msgErr}=await sb.from('room_messages').select('id,sender_id,body,created_at,profiles(display_name,department,avatar_url)').eq('room_id',globalRoom).order('created_at',{ascending:true}).limit(80);
+  const {data:rows,error:msgErr}=await sb.from('room_messages').select('id,sender_id,body,created_at,profiles(display_name,department,avatar_url,show_department)').eq('room_id',globalRoom).order('created_at',{ascending:false}).limit(80);
   if(msgErr){say('Cannot load chat: '+msgErr.message);return}
   const box=document.getElementById('messages');box.replaceChildren();
-  rows.forEach(row=>{const prof=row.profiles||{};const d=document.createElement('div');d.className='msg';const im=document.createElement('img');im.className='avatar';im.src=prof.avatar_url||'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&q=70';const bubble=document.createElement('div');bubble.className='bubble';const small=document.createElement('small');small.textContent=(prof.display_name||'Crew member')+(prof.department?' · '+prof.department:'');const body=document.createElement('div');body.textContent=row.body;bubble.append(small,body);d.append(im,bubble);box.append(d)});box.scrollTop=box.scrollHeight;
+  (rows||[]).slice().reverse().forEach(row=>{const prof=row.profiles||{};const d=document.createElement('div');d.className='msg';const im=document.createElement('img');im.className='avatar';im.src=avatar(prof.avatar_url);const bubble=document.createElement('div');bubble.className='bubble';const small=document.createElement('small');small.textContent=(prof.display_name||'Crew member')+(prof.show_department&&prof.department?' · '+prof.department:'');const body=document.createElement('div');body.textContent=row.body;bubble.append(small,body);d.append(im,bubble);box.append(d)});box.scrollTop=box.scrollHeight;
+  document.getElementById('chatStatus').textContent=rows?.length?'Showing recent messages':'No messages yet. Say hello to the crew.';
   if(window.__crewRealtime)sb.removeChannel(window.__crewRealtime);
   window.__crewRealtime=sb.channel('crew-global-'+globalRoom).on('postgres_changes',{event:'INSERT',schema:'public',table:'room_messages',filter:'room_id=eq.'+globalRoom},payload=>{if(payload.new.sender_id===user.id)return;loadGlobalChat()}).subscribe();
  }
- const oldSubmit=document.getElementById('chatForm').onsubmit;
  document.getElementById('chatForm').onsubmit=async e=>{
-  if(!sb||!user){if(oldSubmit)oldSubmit(e);document.getElementById('authOpen').click();return}
-  e.preventDefault();const input=document.getElementById('chatInput'),body=input.value.trim();if(!body)return;
+  e.preventDefault();if(!sb||!user){document.getElementById('authOpen').click();return}const input=document.getElementById('chatInput'),body=input.value.trim();if(!body)return;
   if(!globalRoom){await loadGlobalChat();if(!globalRoom)return}
   const {error}=await sb.from('room_messages').insert({room_id:globalRoom,sender_id:user.id,body});
   if(error){say('Message not sent: '+error.message);return}input.value='';await loadGlobalChat()
@@ -192,15 +221,10 @@ $$('.toggle').forEach(t=>t.onclick=()=>t.classList.toggle('on'));renderPeople();
   const outgoing=new Set((sent||[]).map(x=>x.receiver_id));
   const ids=[...new Set((received||[]).map(x=>x.sender_id).filter(id=>outgoing.has(id)))];
   if(!ids.length){box.innerHTML='<p class="muted">No matches yet. A match appears here when both people like each other.</p>';return}
-  const {data:profiles,error}=await sb.from('profiles').select('id,display_name,ship_name,department,avatar_url').in('id',ids);
+  const {data:profiles,error}=await sb.from('profiles').select('id,display_name,ship_name,department,avatar_url,show_ship,show_department').in('id',ids);
   if(error){box.textContent='Unable to load matched profiles: '+error.message;return}
   box.replaceChildren();
-  (profiles||[]).forEach(p=>{
-   const row=document.createElement('button');row.type='button';row.className='member';row.style='width:100%;text-align:left;background:transparent;color:var(--text);border:0;cursor:pointer';
-   const img=document.createElement('img');img.className='avatar';img.src=p.avatar_url||'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=70';
-   const info=document.createElement('div');info.innerHTML='<b></b><br><small class="muted"></small>';info.querySelector('b').textContent=p.display_name;info.querySelector('small').textContent=[p.ship_name,p.department].filter(Boolean).join(' · ')||'Crew member';
-   row.append(img,info);row.onclick=()=>openDirect(p);box.append(row)
-  })
+  (profiles||[]).forEach(p=>addCrewMember(box,p,true))
  }
  async function openDirect(person){
   selectedRecipient=person;document.getElementById('directTitle').textContent='Chat with '+person.display_name;go('direct');
@@ -209,10 +233,10 @@ $$('.toggle').forEach(t=>t.onclick=()=>t.classList.toggle('on'));renderPeople();
  async function loadDirect(){
   if(!sb||!user||!selectedRecipient)return;
   const feed=document.getElementById('directFeed');
-  const {data,error}=await sb.from('direct_messages').select('id,sender_id,receiver_id,body,created_at').or('and(sender_id.eq.'+user.id+',receiver_id.eq.'+selectedRecipient.id+'),and(sender_id.eq.'+selectedRecipient.id+',receiver_id.eq.'+user.id+')').order('created_at',{ascending:true}).limit(100);
+  const {data,error}=await sb.from('direct_messages').select('id,sender_id,receiver_id,body,created_at').or('and(sender_id.eq.'+user.id+',receiver_id.eq.'+selectedRecipient.id+'),and(sender_id.eq.'+selectedRecipient.id+',receiver_id.eq.'+user.id+')').order('created_at',{ascending:false}).limit(100);
   if(error){feed.textContent='Unable to load conversation: '+error.message;return}
   feed.replaceChildren();
-  (data||[]).forEach(m=>{
+  (data||[]).slice().reverse().forEach(m=>{
    const own=m.sender_id===user.id,row=document.createElement('div');row.className='msg';
    const bubble=document.createElement('div');bubble.className='bubble';bubble.style.maxWidth='82%';bubble.style.marginLeft=own?'auto':'0';if(own){bubble.style.background='var(--cyan)';bubble.style.color='#03222d'}
    const label=document.createElement('small');label.textContent=own?'You':selectedRecipient.display_name;const body=document.createElement('div');body.textContent=m.body;bubble.append(label,body);row.append(bubble);feed.append(row)
@@ -224,6 +248,7 @@ $$('.toggle').forEach(t=>t.onclick=()=>t.classList.toggle('on'));renderPeople();
  }
  document.getElementById('directForm').onsubmit=async e=>{
   e.preventDefault();const body=document.getElementById('directInput').value.trim();if(!body)return;
+  if(!sb||!user){document.getElementById('authOpen').click();return}
   if(!selectedRecipient){say('Open a match to start a private chat.');return}
   const {error}=await sb.from('direct_messages').insert({sender_id:user.id,receiver_id:selectedRecipient.id,body});
   if(error){say('Message not sent: '+error.message);return}
@@ -233,8 +258,18 @@ $$('.toggle').forEach(t=>t.onclick=()=>t.classList.toggle('on'));renderPeople();
   document.getElementById('match').classList.remove('show');
   if(selectedRecipient){openDirect(selectedRecipient)}else{say('Open a match from the Matches tab to message.');go('matches')}
  };
- const previousAfterLogin=afterLogin;
- afterLogin=async()=>{await previousAfterLogin();await loadMatches()};
- if(sb){restoreSession();loadCrewCards()}
+ document.getElementById('refreshCrew').onclick=()=>{
+  if(!sb||!user){document.getElementById('authOpen').click();return}loadCrewCards()
+ };
+ document.getElementById('refreshMatches').onclick=()=>{
+  if(!sb||!user){document.getElementById('authOpen').click();return}loadMatches()
+ };
+ document.getElementById('signOut').onclick=async()=>{
+  if(!sb)return;
+  const {error}=await sb.auth.signOut();
+  if(error){say('Could not log out: '+error.message);return}
+  location.reload()
+ };
+ if(sb)restoreSession()
 })();
 </script></body></html>
