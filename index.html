@@ -99,6 +99,7 @@ $$('.toggle').forEach(t=>t.onclick=()=>t.classList.toggle('on'));renderPeople();
   const {data:back,error:backError}=await sb.from('likes').select('sender_id').eq('sender_id',target.id).eq('receiver_id',user.id).maybeSingle();
   if(backError){say('Like saved, but match check failed: '+backError.message);return}
   if(back){
+   selectedRecipient=target;
    document.getElementById('matchFace').src=target.avatar_url||'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80';
    document.querySelector('#match h1').textContent="It's a Match!";
    document.querySelector('#match .muted').textContent='You and '+target.display_name+' liked each other.';
