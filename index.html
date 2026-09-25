@@ -156,7 +156,7 @@ $('#chatForm').onsubmit=e=>e.preventDefault();
    document.getElementById('authOpen').textContent='My account';
    const {data:profile,error}=await sb.from('profiles').select('id,display_name,intent,ship_name,department,avatar_url,show_ship,show_department').eq('id',user.id).maybeSingle();
    if(error){say('Signed in, but profile lookup failed: '+error.message);return}
-   if(!profile){say('Account ready. Complete your 18+ crew profile below.');document.getElementById('profileFields').style.display='block';document.getElementById('pName').value=user.user_metadata?.display_name||'';return}
+   if(!profile){layer.classList.add('show');setTab('account');document.getElementById('profileFields').style.display='block';document.getElementById('pName').value=user.user_metadata?.display_name||'';say('Account ready. Complete your 18+ crew profile below.');return}
    document.getElementById('profileFields').style.display='none';
    document.getElementById('authOpen').textContent=profile.display_name;
    document.getElementById('homeGreeting').textContent='Welcome, '+profile.display_name;
@@ -173,11 +173,11 @@ $('#chatForm').onsubmit=e=>e.preventDefault();
   if(!(await checkSchema())){setTab('connect');say('Database is temporarily unavailable. Try again shortly.');return}
   const email=document.getElementById('authEmail').value.trim(),password=document.getElementById('authPassword').value;
   if(!email||password.length<8){say('Enter an email and a password with at least 8 characters.');return}
-  const {data,error}=await sb.auth.signUp({email,password,options:{data:{display_name:document.getElementById('pName').value.trim()||email.split('@')[0]}}});
+  const {data,error}=await sb.auth.signUp({email,password,options:{emailRedirectTo:'https://batan25792579-ship-it.github.io/CrewMatch/',data:{display_name:document.getElementById('pName').value.trim()||email.split('@')[0]}}});
   if(error){say(error.message);return}
-  user=data.user;
-  if(data.session){say('Account created. Fill out your crew profile.');document.getElementById('profileFields').style.display='block'}
-  else say('Check your email to confirm your account, then log in to finish your profile.');
+  user=data.session?.user||null;
+  if(data.session){await afterLogin()}
+  else say('Check your email to confirm your account. Return to CrewMatch and log in to finish your profile.');
  };
  document.getElementById('signIn').onclick=async()=>{
   if(!sb){say('First connect the Supabase project in Setup.');return}
@@ -194,7 +194,7 @@ $('#chatForm').onsubmit=e=>e.preventDefault();
   if(p.birth_date>cutoff){say('CrewMatch is for adults aged 18+.');return}
   const {error:rpcError}=await sb.rpc('save_crew_profile',{p_display_name:p.display_name,p_birth_date:p.birth_date,p_gender:p.gender,p_interested_in:p.interested_in,p_intent:p.intent,p_ship_name:p.ship_name,p_department:p.department});
   if(rpcError){say('Profile could not be saved: '+rpcError.message);return}
-  document.getElementById('profileFields').style.display='none';await afterLogin();
+  document.getElementById('profileFields').style.display='none';await afterLogin();layer.classList.remove('show');go('profile');
  };
  async function loadGlobalChat(){
   if(!sb||!user)return;
