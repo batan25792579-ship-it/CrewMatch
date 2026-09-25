@@ -37,13 +37,13 @@
 <div class="auth-layer" id="authLayer"><div class="auth-box"><button class="auth-close" id="authClose">×</button><h2 id="authTitle">Crew account</h2><p class="muted" id="authSub">Create an account to meet crew members.</p>
 <div class="auth-tabs"><button class="on" data-auth-tab="connect">Status</button><button data-auth-tab="account">Account</button></div>
 <div id="connectPane"><p class="muted">CrewMatch is connected to its shared database.</p><p id="dbStatus" role="status" class="muted">Checking connection…</p><button class="primary" id="saveSb" style="width:100%;margin-top:16px">Check connection</button></div>
-<div id="accountPane" style="display:none"><label>Email</label><input id="authEmail" type="email" autocomplete="email"><label>Password</label><input id="authPassword" type="password" autocomplete="current-password" minlength="8"><div class="auth-buttons"><button class="primary" id="signIn">Log in</button><button class="primary" id="signUp">Create account</button></div>
+<div id="accountPane" style="display:none"><div id="accountCredentials"><label>Email</label><input id="authEmail" type="email" autocomplete="email"><label>Password</label><input id="authPassword" type="password" autocomplete="current-password" minlength="8"><div class="auth-buttons"><button class="primary" id="signIn">Log in</button><button class="primary" id="signUp">Create account</button></div></div><button class="secondary" id="authSignOut" style="display:none">Log out</button>
 <div id="profileFields" style="display:none"><hr style="border-color:var(--line);margin:18px 0"><h3>Finish your 18+ crew profile</h3><label>Display name</label><input id="pName" maxlength="40"><div class="auth-row"><div><label>Date of birth</label><input id="pDob" type="date"></div><div><label>Gender</label><input id="pGender" maxlength="40" placeholder="Enter gender"></div></div><label>Interested in</label><input id="pInterested" maxlength="80" placeholder="Who are you interested in?"><label>Connection goal</label><select id="pIntent"><option value="both">Friends and dating</option><option value="dating">Dating</option><option value="friends">Friends</option></select><label>Ship (optional)</label><input id="pShip" maxlength="80"><label>Department (optional)</label><input id="pDept" maxlength="80"><button class="primary" id="saveProfile" style="width:100%;margin-top:14px">Save crew profile</button></div></div>
 <div class="auth-status" id="authStatus" role="status"></div></div></div><div class="match" id="match"><div class="match-card"><div class="brand" style="justify-content:center"><i class="logo"></i>Crew<span class="cyan">Match</span></div><div class="match-faces"><div class="match-placeholder">You</div><img id="matchFace" alt="Matched crew member"></div><h1>It's a Match!</h1><p class="muted">You liked each other. Start with a respectful hello.</p><button class="primary" style="width:100%;padding:14px" id="messageMatch">Send a message</button><button class="secondary" id="closeMatch">Keep discovering</button></div></div>
 <nav class="nav"><button class="active" data-go="home"><span>⌂</span>Home</button><button data-go="discover"><span>♡</span>Discover</button><button data-go="chat"><span>◌</span>Chat</button><button data-go="matches"><span>♥</span>Matches</button><button data-go="ship"><span>♜</span>Ship</button><button data-go="profile"><span>♙</span>Profile</button></nav>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>
 const $=s=>document.querySelector(s), $$=s=>document.querySelectorAll(s);
-function go(id){$$('.screen').forEach(x=>x.classList.toggle('active',x.id===id));$$('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.go===id));scrollTo(0,0)}
+function go(id){if(id!=='direct')window.__crewLeaveDirect?.();$('.screen').forEach(x=>x.classList.toggle('active',x.id===id));$('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.go===id));scrollTo(0,0)}
 $$('[data-go]').forEach(x=>x.onclick=()=>go(x.dataset.go));
 function toast(t){$('#toast').textContent=t;$('#toast').classList.add('show');setTimeout(()=>$('#toast').classList.remove('show'),2200)}
 $('#chatForm').onsubmit=e=>e.preventDefault();
@@ -51,6 +51,8 @@ $('#chatForm').onsubmit=e=>e.preventDefault();
 (()=> {
  const layer=document.getElementById('authLayer'),status=document.getElementById('authStatus');
  let sb=null,user=null,globalRoom=null,crewCards=[],crewIndex=0,selectedRecipient=null,dbReady=false;
+  const globalMessageIds=new Set(),directMessageIds=new Set();
+  let directChannelRecipient=null;
  const placeholderAvatar='data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="#16405b"/><circle cx="60" cy="42" r="22" fill="#8fc4d5"/><path d="M17 113c0-28 19-43 43-43s43 15 43 43" fill="#8fc4d5"/></svg>');
  const avatar=url=>url&&url.startsWith('https://')?url:placeholderAvatar;
  function addCrewMember(box,p,click){
@@ -154,6 +156,8 @@ $('#chatForm').onsubmit=e=>e.preventDefault();
  async function afterLogin(){
    if(!dbReady)return;
    document.getElementById('authOpen').textContent='My account';
+   document.getElementById('accountCredentials').style.display='none';
+   document.getElementById('authSignOut').style.display='block';
    const {data:profile,error}=await sb.from('profiles').select('id,display_name,intent,ship_name,department,avatar_url,show_ship,show_department').eq('id',user.id).maybeSingle();
    if(error){say('Signed in, but profile lookup failed: '+error.message);return}
    if(!profile){layer.classList.add('show');setTab('account');document.getElementById('profileFields').style.display='block';document.getElementById('pName').value=user.user_metadata?.display_name||'';say('Account ready. Complete your 18+ crew profile below.');return}
@@ -174,7 +178,7 @@ $('#chatForm').onsubmit=e=>e.preventDefault();
   const email=document.getElementById('authEmail').value.trim(),password=document.getElementById('authPassword').value;
   if(!email||password.length<8){say('Enter an email and a password with at least 8 characters.');return}
   const {data,error}=await sb.auth.signUp({email,password,options:{emailRedirectTo:'https://batan25792579-ship-it.github.io/CrewMatch/',data:{display_name:document.getElementById('pName').value.trim()||email.split('@')[0]}}});
-  if(error){say(error.message);return}
+  if(error){say(error.message.includes('Email address not authorized')?'Email sign-ups are temporarily limited while delivery is being set up.':error.message);return}
   user=data.session?.user||null;
   if(data.session){await afterLogin()}
   else say('Check your email to confirm your account. Return to CrewMatch and log in to finish your profile.');
@@ -196,24 +200,53 @@ $('#chatForm').onsubmit=e=>e.preventDefault();
   if(rpcError){say('Profile could not be saved: '+rpcError.message);return}
   document.getElementById('profileFields').style.display='none';await afterLogin();layer.classList.remove('show');go('profile');
  };
+ function renderGlobalMessage(row){
+  const id=String(row.id);if(globalMessageIds.has(id))return;
+  globalMessageIds.add(id);
+  const prof=row.profiles||{},box=document.getElementById('messages'),d=document.createElement('div');
+  d.className='msg';d.dataset.messageId=id;
+  const im=document.createElement('img');im.className='avatar';im.src=avatar(prof.avatar_url);im.alt='';
+  const bubble=document.createElement('div');bubble.className='bubble';
+  const small=document.createElement('small');
+  small.textContent=(prof.display_name||'Crew member')+(prof.show_department&&prof.department?' · '+prof.department:'');
+  const body=document.createElement('div');body.textContent=row.body;
+  bubble.append(small,body);d.append(im,bubble);box.append(d);
+  while(box.children.length>80){globalMessageIds.delete(box.firstElementChild.dataset.messageId);box.firstElementChild.remove()}
+  box.scrollTop=box.scrollHeight;
+  document.getElementById('chatStatus').textContent='Showing recent messages';
+ }
+ async function appendGlobalMessage(id){
+  if(!id||globalMessageIds.has(String(id)))return;
+  const {data,error}=await sb.from('room_messages').select('id,sender_id,body,created_at,profiles(display_name,department,avatar_url,show_department)')
+   .eq('id',id).eq('room_id',globalRoom).maybeSingle();
+  if(error){document.getElementById('chatStatus').textContent='New message could not be loaded. Refresh the page.';return}
+  if(data)renderGlobalMessage(data)
+ }
  async function loadGlobalChat(){
   if(!sb||!user)return;
   const {data:rooms,error}=await sb.from('rooms').select('id,name').eq('kind','global').eq('is_active',true).limit(1);
   if(error){say('Chat setup error: '+error.message);return}
-  globalRoom=rooms?.[0]?.id;if(!globalRoom){say('No Global Crew Chat room found. Run the SQL setup script.');return}
-  const {data:rows,error:msgErr}=await sb.from('room_messages').select('id,sender_id,body,created_at,profiles(display_name,department,avatar_url,show_department)').eq('room_id',globalRoom).order('created_at',{ascending:false}).limit(80);
+  globalRoom=rooms?.[0]?.id;
+  if(!globalRoom){say('No Global Crew Chat room found. Run the SQL setup script.');return}
+  const {data:rows,error:msgErr}=await sb.from('room_messages')
+   .select('id,sender_id,body,created_at,profiles(display_name,department,avatar_url,show_department)')
+   .eq('room_id',globalRoom).order('created_at',{ascending:false}).limit(80);
   if(msgErr){say('Cannot load chat: '+msgErr.message);return}
-  const box=document.getElementById('messages');box.replaceChildren();
-  (rows||[]).slice().reverse().forEach(row=>{const prof=row.profiles||{};const d=document.createElement('div');d.className='msg';const im=document.createElement('img');im.className='avatar';im.src=avatar(prof.avatar_url);const bubble=document.createElement('div');bubble.className='bubble';const small=document.createElement('small');small.textContent=(prof.display_name||'Crew member')+(prof.show_department&&prof.department?' · '+prof.department:'');const body=document.createElement('div');body.textContent=row.body;bubble.append(small,body);d.append(im,bubble);box.append(d)});box.scrollTop=box.scrollHeight;
-  document.getElementById('chatStatus').textContent=rows?.length?'Showing recent messages':'No messages yet. Say hello to the crew.';
-  if(window.__crewRealtime)sb.removeChannel(window.__crewRealtime);
-  window.__crewRealtime=sb.channel('crew-global-'+globalRoom).on('postgres_changes',{event:'INSERT',schema:'public',table:'room_messages',filter:'room_id=eq.'+globalRoom},payload=>{if(payload.new.sender_id===user.id)return;loadGlobalChat()}).subscribe();
+  document.getElementById('messages').replaceChildren();globalMessageIds.clear();
+  (rows||[]).slice().reverse().forEach(renderGlobalMessage);
+  if(!rows?.length)document.getElementById('chatStatus').textContent='No messages yet. Say hello to the crew.';
+  if(!window.__crewRealtime){
+   window.__crewRealtime=sb.channel('crew-global-'+globalRoom)
+    .on('postgres_changes',{event:'INSERT',schema:'public',table:'room_messages',filter:'room_id=eq.'+globalRoom},
+     payload=>appendGlobalMessage(payload.new.id))
+    .subscribe(state=>{if(state==='SUBSCRIBED')loadGlobalChat()});
+  }
  }
  document.getElementById('chatForm').onsubmit=async e=>{
   e.preventDefault();if(!sb||!user){document.getElementById('authOpen').click();return}const input=document.getElementById('chatInput'),body=input.value.trim();if(!body)return;
   if(!globalRoom){await loadGlobalChat();if(!globalRoom)return}
-  const {error}=await sb.from('room_messages').insert({room_id:globalRoom,sender_id:user.id,body});
-  if(error){say('Message not sent: '+error.message);return}input.value='';await loadGlobalChat()
+  const {data,error}=await sb.from('room_messages').insert({room_id:globalRoom,sender_id:user.id,body}).select('id').single();
+  if(error){say('Message not sent: '+error.message);return}input.value='';await appendGlobalMessage(data.id)
  };
  async function loadMatches(){
   if(!sb||!user)return;
@@ -233,29 +266,60 @@ $('#chatForm').onsubmit=e=>e.preventDefault();
   selectedRecipient=person;document.getElementById('directTitle').textContent='Chat with '+person.display_name;go('direct');
   await loadDirect();
  }
+ function renderDirectMessage(m){
+  const id=String(m.id);if(directMessageIds.has(id))return;
+  directMessageIds.add(id);
+  const feed=document.getElementById('directFeed'),own=m.sender_id===user.id,row=document.createElement('div');
+  row.className='msg';row.dataset.messageId=id;
+  const bubble=document.createElement('div');bubble.className='bubble';
+  bubble.style.maxWidth='82%';bubble.style.marginLeft=own?'auto':'0';
+  if(own){bubble.style.background='var(--cyan)';bubble.style.color='#03222d'}
+  const label=document.createElement('small');label.textContent=own?'You':selectedRecipient.display_name;
+  const body=document.createElement('div');body.textContent=m.body;bubble.append(label,body);row.append(bubble);feed.append(row);
+  while(feed.children.length>100){directMessageIds.delete(feed.firstElementChild.dataset.messageId);feed.firstElementChild.remove()}
+  feed.scrollTop=feed.scrollHeight;
+ }
+ async function appendDirectMessage(id,recipientId){
+  if(!id||selectedRecipient?.id!==recipientId||directMessageIds.has(String(id)))return;
+  const {data,error}=await sb.from('direct_messages').select('id,sender_id,receiver_id,body,created_at').eq('id',id).maybeSingle();
+  if(error){document.getElementById('directFeed').textContent='New message could not be loaded. Reopen this chat.';return}
+  if(data&&selectedRecipient?.id===recipientId&&
+     ((data.sender_id===user.id&&data.receiver_id===recipientId)||(data.sender_id===recipientId&&data.receiver_id===user.id)))renderDirectMessage(data)
+ }
  async function loadDirect(){
   if(!sb||!user||!selectedRecipient)return;
-  const feed=document.getElementById('directFeed');
-  const {data,error}=await sb.from('direct_messages').select('id,sender_id,receiver_id,body,created_at').or('and(sender_id.eq.'+user.id+',receiver_id.eq.'+selectedRecipient.id+'),and(sender_id.eq.'+selectedRecipient.id+',receiver_id.eq.'+user.id+')').order('created_at',{ascending:false}).limit(100);
+  const recipientId=selectedRecipient.id,feed=document.getElementById('directFeed');
+  const {data,error}=await sb.from('direct_messages').select('id,sender_id,receiver_id,body,created_at')
+   .or('and(sender_id.eq.'+user.id+',receiver_id.eq.'+recipientId+'),and(sender_id.eq.'+recipientId+',receiver_id.eq.'+user.id+')')
+   .order('created_at',{ascending:false}).limit(100);
+  if(selectedRecipient?.id!==recipientId)return;
   if(error){feed.textContent='Unable to load conversation: '+error.message;return}
-  feed.replaceChildren();
-  (data||[]).slice().reverse().forEach(m=>{
-   const own=m.sender_id===user.id,row=document.createElement('div');row.className='msg';
-   const bubble=document.createElement('div');bubble.className='bubble';bubble.style.maxWidth='82%';bubble.style.marginLeft=own?'auto':'0';if(own){bubble.style.background='var(--cyan)';bubble.style.color='#03222d'}
-   const label=document.createElement('small');label.textContent=own?'You':selectedRecipient.display_name;const body=document.createElement('div');body.textContent=m.body;bubble.append(label,body);row.append(bubble);feed.append(row)
-  });feed.scrollTop=feed.scrollHeight;
-  if(window.__crewDirectRealtime)sb.removeChannel(window.__crewDirectRealtime);
-  window.__crewDirectRealtime=sb.channel('dm-'+user.id+'-'+selectedRecipient.id).on('postgres_changes',{event:'INSERT',schema:'public',table:'direct_messages'},payload=>{
-    const m=payload.new;if((m.sender_id===user.id&&m.receiver_id===selectedRecipient.id)||(m.sender_id===selectedRecipient.id&&m.receiver_id===user.id))loadDirect()
-  }).subscribe()
+  feed.replaceChildren();directMessageIds.clear();
+  (data||[]).slice().reverse().forEach(renderDirectMessage);
+  if(window.__crewDirectRealtime&&directChannelRecipient!==recipientId){
+   sb.removeChannel(window.__crewDirectRealtime);window.__crewDirectRealtime=null;directChannelRecipient=null;
+  }
+  if(!window.__crewDirectRealtime){
+   directChannelRecipient=recipientId;
+   window.__crewDirectRealtime=sb.channel('dm-'+user.id+'-'+recipientId)
+    .on('postgres_changes',{event:'INSERT',schema:'public',table:'direct_messages',filter:'sender_id=eq.'+recipientId},
+     payload=>{if(payload.new.receiver_id===user.id)appendDirectMessage(payload.new.id,recipientId)})
+    .on('postgres_changes',{event:'INSERT',schema:'public',table:'direct_messages',filter:'receiver_id=eq.'+recipientId},
+     payload=>{if(payload.new.sender_id===user.id)appendDirectMessage(payload.new.id,recipientId)})
+    .subscribe(state=>{if(state==='SUBSCRIBED'&&selectedRecipient?.id===recipientId)loadDirect()});
+  }
  }
+ window.__crewLeaveDirect=()=>{
+  if(window.__crewDirectRealtime){sb.removeChannel(window.__crewDirectRealtime);window.__crewDirectRealtime=null;directChannelRecipient=null}
+ };
  document.getElementById('directForm').onsubmit=async e=>{
   e.preventDefault();const body=document.getElementById('directInput').value.trim();if(!body)return;
   if(!sb||!user){document.getElementById('authOpen').click();return}
   if(!selectedRecipient){say('Open a match to start a private chat.');return}
-  const {error}=await sb.from('direct_messages').insert({sender_id:user.id,receiver_id:selectedRecipient.id,body});
+  const recipientId=selectedRecipient.id;
+  const {data,error}=await sb.from('direct_messages').insert({sender_id:user.id,receiver_id:recipientId,body}).select('id').single();
   if(error){say('Message not sent: '+error.message);return}
-  document.getElementById('directInput').value='';await loadDirect()
+  document.getElementById('directInput').value='';await appendDirectMessage(data.id,recipientId)
  };
  document.getElementById('messageMatch').onclick=()=>{
   document.getElementById('match').classList.remove('show');
@@ -283,12 +347,14 @@ $('#chatForm').onsubmit=e=>e.preventDefault();
   layer.classList.add('show');setTab('account');document.getElementById('profileFields').style.display='block';
   document.getElementById('profileFields').scrollIntoView({block:'nearest'})
  };
- document.getElementById('signOut').onclick=async()=>{
+ const signOut=async()=>{
   if(!sb)return;
   const {error}=await sb.auth.signOut();
   if(error){say('Could not log out: '+error.message);return}
   location.reload()
  };
+ document.getElementById('signOut').onclick=signOut;
+ document.getElementById('authSignOut').onclick=signOut;
  if(sb)checkSchema().then(ready=>{if(ready)restoreSession()})
 })();
 </script></body></html>
