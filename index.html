@@ -86,6 +86,8 @@ $('#chatForm').onsubmit=e=>e.preventDefault();
 (()=> {
  const layer=document.getElementById('authLayer'),status=document.getElementById('authStatus');
  let sb=null,user=null,globalRoom=null,crewCards=[],crewIndex=0,selectedRecipient=null,reportTarget=null,currentProfile=null,dbReady=false;
+ const CREW_PAGE_SIZE=30;
+ let crewCursor=null,crewHasMore=true,crewSeenCount=0,crewLoading=false,crewLoadError=false;
   const globalMessageIds=new Set(),directMessageIds=new Set();
   let directChannelRecipient=null;
  const placeholderAvatar='data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="#16405b"/><circle cx="60" cy="42" r="22" fill="#8fc4d5"/><path d="M17 113c0-28 19-43 43-43s43 15 43 43" fill="#8fc4d5"/></svg>');
@@ -99,12 +101,7 @@ $('#chatForm').onsubmit=e=>e.preventDefault();
   detail.textContent=[p.show_ship?p.ship_name:null,p.show_department?p.department:null].filter(Boolean).join(' · ')||'Crew member';
   info.append(name,document.createElement('br'),detail);row.append(image,info);box.append(row)
  }
- async function loadCrewCards(){
-  if(!sb||!user)return;
-  const {data,error}=await sb.from('profiles').select('id,display_name,intent,ship_name,department,bio,avatar_url,is_verified,show_ship,show_department').neq('id',user.id).limit(60);
-  if(error){say('Could not load crew profiles: '+error.message);return}
-  crewCards=(data||[]).filter(p=>p.display_name);crewIndex=0;showCrewCard();
-  document.getElementById('crewCount').textContent=crewCards.length===60?'Showing 60 profiles':crewCards.length+' crew profiles';
+ function renderCrewAvatars(){
   const list=document.getElementById('avatars');list.replaceChildren();
   crewCards.slice(0,10).forEach(p=>{
    const tile=document.createElement('div');tile.className='person';
@@ -112,18 +109,62 @@ $('#chatForm').onsubmit=e=>e.preventDefault();
    const name=document.createElement('span');name.textContent=p.display_name;tile.append(image,name);list.append(tile)
   });
  }
+ async function loadCrewCards(reset=true){
+  if(!sb||!user||!currentProfile||crewLoading)return;
+  if(reset){
+   crewCursor=null;crewHasMore=true;crewSeenCount=0;crewIndex=0;crewCards=[];crewLoadError=false;
+   renderCrewAvatars();
+  }
+  if(!crewHasMore){showCrewCard();return}
+  crewLoading=true;showCrewCard();
+  document.getElementById('crewCount').textContent='Loading profiles…';
+  try{
+   let query=sb.from('profiles')
+    .select('id,display_name,intent,ship_name,department,bio,avatar_url,is_verified,show_ship,show_department')
+    .neq('id',user.id).order('id',{ascending:true}).limit(CREW_PAGE_SIZE+1);
+   if(crewCursor)query=query.gt('id',crewCursor);
+   const {data,error}=await query;
+   if(error)throw error;
+   const page=(data||[]).slice(0,CREW_PAGE_SIZE);
+   crewCards=page;crewIndex=0;
+   crewHasMore=(data||[]).length>CREW_PAGE_SIZE;
+   if(page.length)crewCursor=page[page.length-1].id;
+   crewSeenCount+=page.length;
+   crewLoadError=false;
+   document.getElementById('crewCount').textContent=crewSeenCount
+    ?crewSeenCount+' profiles loaded'+(crewHasMore?' · more available':'')
+    :'No crew profiles yet';
+   renderCrewAvatars();
+  }catch(e){
+   crewLoadError=true;crewHasMore=false;crewCards=[];crewIndex=0;
+   document.getElementById('crewCount').textContent='Could not load profiles';
+   say('Could not load crew profiles. Tap Refresh to try again.');
+  }finally{crewLoading=false;showCrewCard()}
+ }
+ async function nextCrewCard(advance=true){
+  if(crewLoading)return;
+  if(advance)crewIndex++;
+  if(crewIndex<crewCards.length){showCrewCard();return}
+  if(crewHasMore){await loadCrewCards(false);return}
+  crewCards=[];crewIndex=0;showCrewCard()
+ }
  function showCrewCard(){
   const name=document.getElementById('discoverName'),meta=document.getElementById('discoverMeta'),bio=document.getElementById('discoverBio');
   const photo=document.getElementById('discoverPhoto'),tags=document.getElementById('discoverTags');
-  tags.replaceChildren();const noCard=!currentProfile||!crewCards.length;document.getElementById('likeBtn').disabled=noCard;
+  tags.replaceChildren();
+  const noCard=!currentProfile||crewLoading||crewIndex>=crewCards.length;
+  document.getElementById('likeBtn').disabled=noCard;
   document.getElementById('skipBtn').disabled=noCard;
-  document.getElementById('discoverReport').disabled=noCard;document.getElementById('discoverBlock').disabled=noCard;
-  if(!crewCards.length){
-   photo.style.backgroundImage='none';name.textContent=user&&!currentProfile?'Finish your crew profile':user?'No crew profiles yet':'Sign in to discover crew';
-   meta.textContent=user&&!currentProfile?'Finish your profile to discover crew.':user?'Invite a crew member to join CrewMatch.':'Connect your crew account first.';bio.textContent='';return
+  document.getElementById('discoverReport').disabled=noCard;
+  document.getElementById('discoverBlock').disabled=noCard;
+  if(noCard){
+   photo.style.backgroundImage='none';
+   name.textContent=!user?'Sign in to discover crew':!currentProfile?'Finish your crew profile':crewLoading?'Loading crew profiles…':crewLoadError?'Profiles unavailable':crewSeenCount?'You have seen all crew profiles':'No crew profiles yet';
+   meta.textContent=!user?'Connect your crew account first.':!currentProfile?'Finish your profile to discover crew.':crewLoading?'Loading the next crew profiles.':crewLoadError?'Tap Refresh to try again.':crewSeenCount?'Tap Refresh to explore again.':'Invite a crew member to join CrewMatch.';
+   bio.textContent='';return
   }
-  if(crewIndex>=crewCards.length)crewIndex=0;
-  const p=crewCards[crewIndex];photo.style.backgroundImage=p.avatar_url?'url("'+avatar(p.avatar_url).replaceAll('"','%22')+'")':'none';
+  const p=crewCards[crewIndex];
+  photo.style.backgroundImage=p.avatar_url?'url("'+avatar(p.avatar_url).replaceAll('"','%22')+'")':'none';
   name.textContent=p.display_name;
   meta.textContent=[p.show_ship?p.ship_name:null,p.show_department?p.department:null].filter(Boolean).join(' · ');
   bio.textContent=p.bio||'';
@@ -145,10 +186,16 @@ $('#chatForm').onsubmit=e=>e.preventDefault();
   if(!data?.length){box.textContent='No other crew profiles sharing this ship yet.';return}
   data.forEach(p=>addCrewMember(box,p,false))
  }
- document.getElementById('skipBtn').onclick=()=>{if(!user){document.getElementById('authOpen').click();return}if(!crewCards.length)return;crewIndex++;showCrewCard()};
+ document.getElementById('skipBtn').onclick=async()=>{
+  if(!user){document.getElementById('authOpen').click();return}
+  if(!currentProfile){openProfileSetup();return}
+  if(!crewCards.length||crewLoading)return;
+  await nextCrewCard()
+ };
  document.getElementById('likeBtn').onclick=async()=>{
   if(!sb||!user){document.getElementById('authOpen').click();return}
-  if(!crewCards.length){await loadCrewCards();if(!crewCards.length)return}
+  if(!currentProfile){openProfileSetup();return}
+  if(crewLoading||!crewCards[crewIndex])return;
   const target=crewCards[crewIndex];
   const {error}=await sb.from('likes').upsert({sender_id:user.id,receiver_id:target.id},{onConflict:'sender_id,receiver_id',ignoreDuplicates:true});
   if(error){say('Like failed: '+error.message);return}
@@ -161,7 +208,7 @@ $('#chatForm').onsubmit=e=>e.preventDefault();
    document.querySelector('#match .muted').textContent='You and '+target.display_name+' liked each other.';
    document.getElementById('match').classList.add('show');
    await loadMatches()
-  }else{toast('Like sent');crewIndex++;showCrewCard()}
+  }else{toast('Like sent');await nextCrewCard()}
  };
  document.getElementById('profileBtn').onclick=()=>toast('Profile details are shown on this card');
  const reportLayer=document.getElementById('reportLayer'),reportStatus=document.getElementById('reportStatus');
@@ -201,16 +248,22 @@ $('#chatForm').onsubmit=e=>e.preventDefault();
    const {error}=await sb.from('blocks').insert({blocker_id:user.id,blocked_id:target.id});
    if(error&&error.code!=='23505'){say('Could not block this user: '+error.message);return}
    if(selectedRecipient?.id===target.id){selectedRecipient=null;document.getElementById('match').classList.remove('show');go('matches')}
-   crewCards=crewCards.filter(p=>p.id!==target.id);
-   if(crewIndex>=crewCards.length)crewIndex=0;
-   showCrewCard();
-   await Promise.all([loadCrewCards(),loadMatches(),currentProfile?loadShipCrew(currentProfile):Promise.resolve()]);
+   const removedAt=crewCards.findIndex(p=>p.id===target.id);
+   if(removedAt>=0){
+    crewCards.splice(removedAt,1);
+    if(removedAt<crewIndex)crewIndex--;
+    if(removedAt===crewIndex)await nextCrewCard(false);
+    else showCrewCard();
+   }
+   await Promise.all([loadMatches(),currentProfile?loadShipCrew(currentProfile):Promise.resolve()]);
    toast('User blocked');
   }catch(e){say('Could not block this user. Try again.')}
  }
  document.getElementById('discoverBlock').onclick=()=>blockUser(crewCards[crewIndex]);
  document.getElementById('directBlock').onclick=()=>blockUser(selectedRecipient);
- document.getElementById('closeMatch').onclick=()=>{document.getElementById('match').classList.remove('show');crewIndex++;showCrewCard()};
+ document.getElementById('closeMatch').onclick=async()=>{
+  document.getElementById('match').classList.remove('show');await nextCrewCard()
+ };
 
  const say=t=>{status.textContent=t};
  const CREWMATCH_DB={url:"https://eigfqueoowtvxpyromdn.supabase.co",key:"sb_publishable_II7F1u545Tq_xT-XlMDQtg_rZgAqnwN"};
@@ -455,12 +508,15 @@ $('#chatForm').onsubmit=e=>e.preventDefault();
   if(error){say('Message not sent: '+error.message);return}
   document.getElementById('directInput').value='';await appendDirectMessage(data.id,recipientId)
  };
- document.getElementById('messageMatch').onclick=()=>{
+ document.getElementById('messageMatch').onclick=async()=>{
   document.getElementById('match').classList.remove('show');
-  if(selectedRecipient){openDirect(selectedRecipient)}else{say('Open a match from the Matches tab to message.');go('matches')}
+  if(selectedRecipient){const target=selectedRecipient;await nextCrewCard();await openDirect(target)}
+  else{say('Open a match from the Matches tab to message.');go('matches')}
  };
- document.getElementById('refreshCrew').onclick=()=>{
-  if(!sb||!user){document.getElementById('authOpen').click();return}loadCrewCards()
+ document.getElementById('refreshCrew').onclick=async()=>{
+  if(!sb||!user){document.getElementById('authOpen').click();return}
+  if(!currentProfile){openProfileSetup();return}
+  await loadCrewCards()
  };
  document.getElementById('refreshMatches').onclick=()=>{
   if(!sb||!user){document.getElementById('authOpen').click();return}loadMatches()
