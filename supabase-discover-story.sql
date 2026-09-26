@@ -10,7 +10,7 @@ create table if not exists public.profile_prompts (
 );
 
 alter table public.profile_prompts enable row level security;
-revoke all on public.profile_prompts from anon;
+revoke all on public.profile_prompts from anon, authenticated;
 grant select on public.profile_prompts to authenticated;
 
 drop policy if exists "view permitted crew prompts" on public.profile_prompts;
