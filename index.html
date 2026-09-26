@@ -17,9 +17,14 @@
 .auth-box h2{margin-bottom:6px}.auth-box label{display:block;margin:12px 0 5px;color:#b8d1df;font-size:13px}
 .auth-box input,.auth-box select{width:100%;padding:12px;border:1px solid var(--line);border-radius:12px;background:#061726;color:white}
 .auth-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:440px){.auth-row{grid-template-columns:1fr}}
+.onboarding-banner{display:none;margin:16px 0;padding:18px;border:1px solid var(--cyan);border-radius:18px;background:#0e3349}
+.onboarding-banner h2{margin-bottom:6px;font-size:20px}.onboarding-banner p{margin-bottom:14px}
+.onboarding-banner .primary{width:100%;min-height:48px}
 .auth-buttons{display:flex;gap:8px;margin-top:16px}.auth-buttons button{flex:1}
 .auth-close{float:right;border:0;background:none;color:#9eb5c5;font-size:23px;cursor:pointer}
 .auth-status{margin-top:12px;color:var(--cyan);min-height:20px;font-size:14px}
+.field-help{display:block;margin-top:6px;color:var(--muted);font-size:12px}
 .auth-tabs{display:flex;gap:8px;margin:16px 0}.auth-tabs button{border:1px solid var(--line);border-radius:999px;background:#071c2c;color:#d7e7ef;padding:8px 13px}
 .auth-tabs button.on{background:var(--cyan);color:#03222d}
 .safety-actions{display:flex;gap:10px;margin:6px 0 16px}
@@ -35,7 +40,7 @@
 </head>
 <body><div class="toast" id="toast">Done</div><main class="app">
 <header class="top"><div class="top-row"><div class="brand"><i class="logo"></i>Crew<span class="cyan">Match</span></div><button class="auth-trigger" id="authOpen">Join CrewMatch</button></div></header>
-<section class="screen active" id="home"><p class="muted" id="homeGreeting">Sign in to meet real crew members</p><div class="hero"><span class="pill">YOUR SHIP</span><h1 id="homeShip" style="margin:9px 0 0">Your ship</h1><span id="homeShipMeta">Add a ship to your crew profile</span></div><div class="section-title"><h3>Crew profiles</h3><span class="cyan" id="crewCount">Sign in to see crew</span></div><div class="avatars" id="avatars"></div><div class="section-title"><h3>Connect</h3></div><div class="quick"><div class="card" data-go="chat"><span class="icon">💬</span><b>Global Chat</b><small class="muted">Crew worldwide</small></div><div class="card" data-go="ship"><span class="icon">🚢</span><b>My Ship</b><small class="muted" id="homeShipLink">Your ship</small></div><div class="card" data-go="discover"><span class="icon">🌴</span><b>Discover</b><small class="muted">Meet new crew</small></div></div></section>
+<section class="screen active" id="home"><p class="muted" id="homeGreeting">Sign in to meet real crew members</p><div class="onboarding-banner" id="onboardingBanner"><h2>Your account is ready</h2><p>Finish your 18+ crew profile to meet other crew members. It takes about a minute.</p><button class="primary" id="finishProfileHome" type="button">Finish my crew profile</button></div><div class="hero"><span class="pill">YOUR SHIP</span><h1 id="homeShip" style="margin:9px 0 0">Your ship</h1><span id="homeShipMeta">Add a ship to your crew profile</span></div><div class="section-title"><h3>Crew profiles</h3><span class="cyan" id="crewCount">Sign in to see crew</span></div><div class="avatars" id="avatars"></div><div class="section-title"><h3>Connect</h3></div><div class="quick"><div class="card" data-go="chat"><span class="icon">💬</span><b>Global Chat</b><small class="muted">Crew worldwide</small></div><div class="card" data-go="ship"><span class="icon">🚢</span><b>My Ship</b><small class="muted" id="homeShipLink">Your ship</small></div><div class="card" data-go="discover"><span class="icon">🌴</span><b>Discover</b><small class="muted">Meet new crew</small></div></div></section>
 <section class="screen" id="chat"><h2>Global Crew Chat</h2><p class="muted" id="chatStatus">Sign in to see crew messages.</p><div class="messages" id="messages"></div><form class="composer" id="chatForm"><input id="chatInput" placeholder="Type a message…" maxlength="1000" autocomplete="off"><button class="send" aria-label="Send message">➤</button></form></section>
 <section class="screen" id="discover"><div class="top-row"><h2>Discover</h2><button class="auth-trigger" id="refreshCrew">Refresh</button></div><p class="muted">Meet crew members with real accounts</p><div class="card discover"><div class="photo" id="discoverPhoto"></div><div class="profile-info"><span class="pill">Crew profile</span><h1 id="discoverName" style="margin:10px 0 2px">Sign in to discover crew</h1><p id="discoverMeta"></p><div class="tags" id="discoverTags"></div><p id="discoverBio" style="margin-top:13px"></p></div></div><div class="actions"><button class="round" id="skipBtn" aria-label="Skip profile">×</button><button class="round like" id="likeBtn" aria-label="Like profile">♥</button><button class="round" id="profileBtn" aria-label="Profile details">ⓘ</button></div><div class="safety-actions"><button type="button" id="discoverReport">Report</button><button type="button" id="discoverBlock">Block</button></div></section>
 <section class="screen" id="matches"><div class="top-row"><h2>Your Matches</h2><button class="auth-trigger" id="refreshMatches">Refresh</button></div><p class="muted">People who liked you back</p><div class="card ship-card" id="matchesList"><p class="muted">Sign in to see your matches.</p></div></section>
@@ -65,15 +70,15 @@
  </div>
 </div>
 <div class="auth-layer" id="authLayer"><div class="auth-box"><button class="auth-close" id="authClose">×</button><h2 id="authTitle">Crew account</h2><p class="muted" id="authSub">Create an account to meet crew members.</p>
-<div class="auth-tabs"><button class="on" data-auth-tab="connect">Status</button><button data-auth-tab="account">Account</button></div>
+<div class="auth-tabs"><button class="on" data-auth-tab="connect">Status</button><button data-auth-tab="account">Account</button></div><div class="auth-status" id="authStatus" role="status"></div>
 <div id="connectPane"><p class="muted">CrewMatch is connected to its shared database.</p><p id="dbStatus" role="status" class="muted">Checking connection…</p><button class="primary" id="saveSb" style="width:100%;margin-top:16px">Check connection</button></div>
 <div id="accountPane" style="display:none"><div id="accountCredentials"><label>Email</label><input id="authEmail" type="email" autocomplete="email"><label>Password</label><input id="authPassword" type="password" autocomplete="current-password" minlength="8"><div class="auth-buttons"><button class="primary" id="signIn">Log in</button><button class="primary" id="signUp">Create account</button></div></div><button class="secondary" id="authSignOut" style="display:none">Log out</button>
-<div id="profileFields" style="display:none"><hr style="border-color:var(--line);margin:18px 0"><h3>Finish your 18+ crew profile</h3><label>Display name</label><input id="pName" maxlength="40"><div class="auth-row"><div><label>Date of birth</label><input id="pDob" type="date"></div><div><label>Gender</label><input id="pGender" maxlength="40" placeholder="Enter gender"></div></div><label>Interested in</label><input id="pInterested" maxlength="80" placeholder="Who are you interested in?"><label>Connection goal</label><select id="pIntent"><option value="both">Friends and dating</option><option value="dating">Dating</option><option value="friends">Friends</option></select><label>Ship (optional)</label><input id="pShip" maxlength="80"><label>Department (optional)</label><input id="pDept" maxlength="80"><button class="primary" id="saveProfile" style="width:100%;margin-top:14px">Save crew profile</button></div></div>
-<div class="auth-status" id="authStatus" role="status"></div></div></div><div class="match" id="match"><div class="match-card"><div class="brand" style="justify-content:center"><i class="logo"></i>Crew<span class="cyan">Match</span></div><div class="match-faces"><div class="match-placeholder">You</div><img id="matchFace" alt="Matched crew member"></div><h1>It's a Match!</h1><p class="muted">You liked each other. Start with a respectful hello.</p><button class="primary" style="width:100%;padding:14px" id="messageMatch">Send a message</button><button class="secondary" id="closeMatch">Keep discovering</button></div></div>
+<div id="profileFields" style="display:none"><hr style="border-color:var(--line);margin:18px 0"><h3>Finish your 18+ crew profile</h3><p class="muted">Fill in the required fields below. Ship and department are optional.</p><label>Display name</label><input id="pName" maxlength="40" minlength="2" autocomplete="nickname" required><div class="auth-row"><div><label>Date of birth</label><input id="pDob" type="date" required></div><div><label>Gender</label><input id="pGender" maxlength="40" placeholder="Enter gender" required></div></div><label for="pInterested">Interested in (required)</label><input id="pInterested" maxlength="80" placeholder="Women, men, everyone…" required><small class="field-help">For example: women, men or everyone.</small><label>Connection goal</label><select id="pIntent"><option value="both">Friends and dating</option><option value="dating">Dating</option><option value="friends">Friends</option></select><label>Ship (optional)</label><input id="pShip" maxlength="80"><label>Department (optional)</label><input id="pDept" maxlength="80"><button class="primary" id="saveProfile" style="width:100%;margin-top:14px">Save crew profile</button><p class="auth-status" id="profileSaveStatus" role="status"></p></div></div>
+</div></div><div class="match" id="match"><div class="match-card"><div class="brand" style="justify-content:center"><i class="logo"></i>Crew<span class="cyan">Match</span></div><div class="match-faces"><div class="match-placeholder">You</div><img id="matchFace" alt="Matched crew member"></div><h1>It's a Match!</h1><p class="muted">You liked each other. Start with a respectful hello.</p><button class="primary" style="width:100%;padding:14px" id="messageMatch">Send a message</button><button class="secondary" id="closeMatch">Keep discovering</button></div></div>
 <nav class="nav"><button class="active" data-go="home"><span>⌂</span>Home</button><button data-go="discover"><span>♡</span>Discover</button><button data-go="chat"><span>◌</span>Chat</button><button data-go="matches"><span>♥</span>Matches</button><button data-go="ship"><span>♜</span>Ship</button><button data-go="profile"><span>♙</span>Profile</button></nav>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>
 const $=s=>document.querySelector(s), $$=s=>document.querySelectorAll(s);
-function go(id){if(id!=='direct')window.__crewLeaveDirect?.();$('.screen').forEach(x=>x.classList.toggle('active',x.id===id));$('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.go===id));scrollTo(0,0)}
+function go(id){if(id!=='direct')window.__crewLeaveDirect?.();$$('.screen').forEach(x=>x.classList.toggle('active',x.id===id));$$('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.go===id));scrollTo(0,0)}
 $$('[data-go]').forEach(x=>x.onclick=()=>go(x.dataset.go));
 function toast(t){$('#toast').textContent=t;$('#toast').classList.add('show');setTimeout(()=>$('#toast').classList.remove('show'),2200)}
 $('#chatForm').onsubmit=e=>e.preventDefault();
@@ -110,11 +115,12 @@ $('#chatForm').onsubmit=e=>e.preventDefault();
  function showCrewCard(){
   const name=document.getElementById('discoverName'),meta=document.getElementById('discoverMeta'),bio=document.getElementById('discoverBio');
   const photo=document.getElementById('discoverPhoto'),tags=document.getElementById('discoverTags');
-  tags.replaceChildren();const noCard=Boolean(user)&&!crewCards.length;document.getElementById('likeBtn').disabled=noCard;
+  tags.replaceChildren();const noCard=!currentProfile||!crewCards.length;document.getElementById('likeBtn').disabled=noCard;
+  document.getElementById('skipBtn').disabled=noCard;
   document.getElementById('discoverReport').disabled=noCard;document.getElementById('discoverBlock').disabled=noCard;
   if(!crewCards.length){
-   photo.style.backgroundImage='none';name.textContent=user?'No crew profiles yet':'Sign in to discover crew';
-   meta.textContent=user?'Invite a crew member to join CrewMatch.':'Connect your crew account first.';bio.textContent='';return
+   photo.style.backgroundImage='none';name.textContent=user&&!currentProfile?'Finish your crew profile':user?'No crew profiles yet':'Sign in to discover crew';
+   meta.textContent=user&&!currentProfile?'Finish your profile to discover crew.':user?'Invite a crew member to join CrewMatch.':'Connect your crew account first.';bio.textContent='';return
   }
   if(crewIndex>=crewCards.length)crewIndex=0;
   const p=crewCards[crewIndex];photo.style.backgroundImage=p.avatar_url?'url("'+avatar(p.avatar_url).replaceAll('"','%22')+'")':'none';
@@ -221,7 +227,23 @@ $('#chatForm').onsubmit=e=>e.preventDefault();
   }catch(e){dbReady=false;status.textContent='Could not check the database: '+e.message;return false}
  }
  connect(CREWMATCH_DB)
- document.getElementById('authOpen').onclick=async()=>{layer.classList.add('show');if(!dbReady)await checkSchema();setTab(dbReady?'account':'connect')};
+ function openProfileSetup(){
+   layer.classList.add('show');setTab('account');
+   document.getElementById('profileFields').style.display='block';
+   document.querySelector('[data-auth-tab="account"]').textContent='Complete profile';
+   document.getElementById('authTitle').textContent='Finish your crew profile';
+   document.getElementById('authSub').textContent='Your account is ready. Add your details to meet crew members.';
+   say('Your account is active. Fill in the fields below and save your profile.');
+   document.getElementById('profileSaveStatus').textContent='';
+   document.querySelector('.auth-box').scrollTop=0;
+ }
+ document.getElementById('finishProfileHome').onclick=openProfileSetup;
+ document.getElementById('authOpen').onclick=async()=>{
+   layer.classList.add('show');
+   if(!dbReady)await checkSchema();
+   if(user&&!currentProfile&&dbReady)openProfileSetup();
+   else setTab(dbReady?'account':'connect')
+ };
  document.getElementById('authClose').onclick=()=>layer.classList.remove('show');
  layer.addEventListener('click',e=>{if(e.target===layer)layer.classList.remove('show')});
  document.querySelectorAll('[data-auth-tab]').forEach(b=>b.onclick=()=>setTab(b.dataset.authTab));
@@ -231,14 +253,36 @@ $('#chatForm').onsubmit=e=>e.preventDefault();
  };
  async function restoreSession(){if(!sb)return;const {data}=await sb.auth.getSession();if(data.session){user=data.session.user;await afterLogin()}}
  async function afterLogin(){
-   if(!dbReady)return;
+   if(!dbReady)return false;
    document.getElementById('authOpen').textContent='My account';
    document.getElementById('accountCredentials').style.display='none';
    document.getElementById('authSignOut').style.display='block';
    const {data:profile,error}=await sb.from('profiles').select('id,display_name,intent,ship_name,department,avatar_url,show_ship,show_department').eq('id',user.id).maybeSingle();
-   if(error){say('Signed in, but profile lookup failed: '+error.message);return}
-   if(!profile){currentProfile=null;layer.classList.add('show');setTab('account');document.getElementById('profileFields').style.display='block';document.getElementById('pName').value=user.user_metadata?.display_name||'';say('Account ready. Complete your 18+ crew profile below.');return}
+   if(error){say('Signed in, but profile lookup failed: '+error.message);return false}
+   if(!profile){
+    currentProfile=null;
+    document.getElementById('authOpen').textContent='Finish profile';
+    document.getElementById('onboardingBanner').style.display='block';
+    document.getElementById('homeGreeting').textContent='Your account is ready. Complete your profile to join the crew.';
+    document.getElementById('crewCount').textContent='Finish your profile to meet crew';
+    document.getElementById('myName').textContent='Finish your crew profile';
+    document.getElementById('myMeta').textContent='Your account is active; your profile is not yet complete.';
+    document.getElementById('myIntent').textContent='Add your name, age and interests to start meeting crew.';
+    document.getElementById('editProfile').textContent='Finish my crew profile';
+    document.getElementById('editProfile').style.display='block';
+    document.getElementById('signOut').style.display='block';
+    document.getElementById('chatStatus').textContent='Finish your crew profile to join chat.';
+    document.getElementById('shipStatus').textContent='Finish your crew profile to meet your ship community.';
+    document.getElementById('shipMembers').textContent='Finish your crew profile first.';
+    document.getElementById('matchesList').textContent='Finish your crew profile to start matching.';
+    if(!document.getElementById('pName').value.trim())document.getElementById('pName').value=user.user_metadata?.display_name||'';
+    showCrewCard();
+    openProfileSetup();return false
+   }
    document.getElementById('profileFields').style.display='none';currentProfile=profile;
+   document.getElementById('onboardingBanner').style.display='none';
+   document.getElementById('editProfile').textContent='Edit profile';
+   document.querySelector('[data-auth-tab="account"]').textContent='Account';
    document.getElementById('authOpen').textContent=profile.display_name;
    document.getElementById('homeGreeting').textContent='Welcome, '+profile.display_name;
    document.getElementById('myName').textContent=profile.display_name;
@@ -247,7 +291,7 @@ $('#chatForm').onsubmit=e=>e.preventDefault();
    document.getElementById('signOut').style.display='block';
    document.getElementById('editProfile').style.display='block';
    say('Signed in as '+profile.display_name+'.');
-   await Promise.all([loadCrewCards(),loadShipCrew(profile),loadGlobalChat(),loadMatches()])
+   await Promise.all([loadCrewCards(),loadShipCrew(profile),loadGlobalChat(),loadMatches()]);return true
   }
  document.getElementById('signUp').onclick=async()=>{
   if(!sb){say('Connection unavailable. Refresh the page.');return}
@@ -267,15 +311,28 @@ $('#chatForm').onsubmit=e=>e.preventDefault();
   if(error){say(error.message);return}user=data.user;await afterLogin();
  };
  document.getElementById('saveProfile').onclick=async()=>{
-  if(!sb||!user){say('Log in first.');return}
-  if(!(await checkSchema())){setTab('connect');say('Database is temporarily unavailable. Try again shortly.');return}
+  const saveStatus=document.getElementById('profileSaveStatus'),button=document.getElementById('saveProfile');
+  const fail=message=>{say(message);saveStatus.textContent=message;saveStatus.scrollIntoView({block:'nearest'})};
+  saveStatus.textContent='';
+  if(!sb||!user){fail('Log in first.');return}
+  if(!(await checkSchema())){setTab('connect');fail('Database is temporarily unavailable. Try again shortly.');return}
   const p={id:user.id,display_name:document.getElementById('pName').value.trim(),birth_date:document.getElementById('pDob').value,gender:document.getElementById('pGender').value.trim(),interested_in:document.getElementById('pInterested').value.trim(),intent:document.getElementById('pIntent').value,ship_name:document.getElementById('pShip').value.trim()||null,department:document.getElementById('pDept').value.trim()||null};
-  if(!p.display_name||!p.birth_date||!p.gender||!p.interested_in){say('Complete name, birth date, gender and who you are interested in.');return}
+  if(p.display_name.length<2||!p.birth_date||!p.gender||!p.interested_in){
+   fail(!p.interested_in?'Fill in "Interested in" (for example: women, men or everyone).':'Fill in your name (at least 2 characters), birth date and gender.');
+   const missing=['pName','pDob','pGender','pInterested'].map(id=>document.getElementById(id))
+    .find(field=>!field.value.trim()||(field.id==='pName'&&field.value.trim().length<2));
+   missing?.focus();return
+  }
   const today=new Date(),cutoff=new Date(Date.UTC(today.getUTCFullYear()-18,today.getUTCMonth(),today.getUTCDate())).toISOString().slice(0,10);
-  if(p.birth_date>cutoff){say('CrewMatch is for adults aged 18+.');return}
-  const {error:rpcError}=await sb.rpc('save_crew_profile',{p_display_name:p.display_name,p_birth_date:p.birth_date,p_gender:p.gender,p_interested_in:p.interested_in,p_intent:p.intent,p_ship_name:p.ship_name,p_department:p.department});
-  if(rpcError){say('Profile could not be saved: '+rpcError.message);return}
-  document.getElementById('profileFields').style.display='none';await afterLogin();layer.classList.remove('show');go('profile');
+  if(p.birth_date>cutoff){fail('CrewMatch is for adults aged 18+.');document.getElementById('pDob').focus();return}
+  button.disabled=true;button.textContent='Saving…';
+  try{
+   const {error:rpcError}=await sb.rpc('save_crew_profile',{p_display_name:p.display_name,p_birth_date:p.birth_date,p_gender:p.gender,p_interested_in:p.interested_in,p_intent:p.intent,p_ship_name:p.ship_name,p_department:p.department});
+   if(rpcError){fail('Profile could not be saved: '+rpcError.message);return}
+   if(!(await afterLogin())){fail('Profile saved. Refresh the page to load it.');return}
+   layer.classList.remove('show');go('profile');toast('Crew profile saved');
+  }catch(e){fail('Could not save the profile. Try again.')}
+  finally{button.disabled=false;button.textContent='Save crew profile'}
  };
  function renderGlobalMessage(row){
   const id=String(row.id);if(globalMessageIds.has(id))return;
@@ -410,6 +467,7 @@ $('#chatForm').onsubmit=e=>e.preventDefault();
  };
  document.getElementById('editProfile').onclick=async()=>{
   if(!sb||!user){document.getElementById('authOpen').click();return}
+  if(!currentProfile){openProfileSetup();return}
   const {data:p,error}=await sb.from('profiles').select('display_name,gender,interested_in,intent,ship_name,department').eq('id',user.id).single();
   if(error){layer.classList.add('show');setTab('account');say('Could not load your profile: '+error.message);return}
   const {data:privateProfile,error:privateError}=await sb.from('profile_private').select('birth_date').eq('id',user.id).maybeSingle();
