@@ -18,6 +18,10 @@
 
 Если письмо после подтверждения ведёт не на сайт, в Supabase **Authentication → URL Configuration** установите **Site URL** на `https://batan25792579-ship-it.github.io/CrewMatch/` и добавьте этот же адрес в разрешённые **Redirect URLs**. После подтверждения вернитесь на сайт и войдите.
 
+## Заполните историю и попробуйте фильтр
+
+Во вкладке **Profile → About me** можно сохранить рассказ о себе и ответы на три вопроса. В **Discover → Looking for** можно переключить выдачу между **Everyone**, **Friends** и **Dating**; анкеты с целью **Friends and dating** подходят к обоим фильтрам. Отправленные лайки уходят из Discover и появляются в **Matches** после взаимного лайка. Фильтр запоминается на этом устройстве.
+
 ## Проверьте двух пользователей
 
 1. Заполните обе анкеты и, если хотите проверить вкладку **Ship**, укажите одинаковое название судна.
@@ -29,7 +33,7 @@ SQL-проверка с тремя временными учётными зап�
 
 ## Если разворачиваете отдельную копию проекта
 
-На новом Supabase-проекте выполните [supabase.sql](supabase.sql), затем [supabase-profile-gate.sql](supabase-profile-gate.sql) в **SQL Editor**. Затем выполните [supabase-profile-photos.sql](supabase-profile-photos.sql), чтобы создать закрытое хранилище и таблицу фотографий. В основном проекте эти изменения уже применены. Если в вашей старой схеме дата рождения хранится в `public.profiles`, сначала выполните [supabase-privacy-migration.sql](supabase-privacy-migration.sql), затем миграцию защиты анкет. Не запускайте базовую схему повторно на существующей базе.
+На новом Supabase-проекте выполните [supabase.sql](supabase.sql), затем [supabase-profile-gate.sql](supabase-profile-gate.sql) в **SQL Editor**. Затем выполните [supabase-profile-photos.sql](supabase-profile-photos.sql), чтобы создать закрытое хранилище и таблицу фотографий. Затем выполните [supabase-discover-story.sql](supabase-discover-story.sql), чтобы добавить вопросы анкеты и выдачу по цели знакомства. В основном проекте эти изменения уже применены. Если в вашей старой схеме дата рождения хранится в `public.profiles`, сначала выполните [supabase-privacy-migration.sql](supabase-privacy-migration.sql), затем миграцию защиты анкет. Не запускайте базовую схему повторно на существующей базе.
 
 Для отдельной копии также понадобится заменить публичные Project URL и Publishable key в `index.html`, настроить адрес сайта в **Authentication → URL Configuration** и разместить сайт. Никогда не публикуйте Secret / service_role key или пароль базы.
 
